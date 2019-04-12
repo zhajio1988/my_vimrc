@@ -24,12 +24,11 @@ colorscheme desert
 
 """"""""""""""""""some useful plugins setting"""""""""""""""
 """"""""""""""""""""""""<tag_list>""""""""""""""""""""""""""
-let Tlist_Show_One_File=1
-let Tlist_Exit_OnlyWindow=1
-let Tlist_Use_Right_Window=1
+""let Tlist_Show_One_File=1
+""let Tlist_Exit_OnlyWindow=1
+""let Tlist_Use_Right_Window=1
+""nmap <silent> <F4> :TlistToggle<CR>
 set cscopetag
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nmap <silent> <F4> :TlistToggle<CR>
 
 """"""""""""""""""""""""<win_manager>""""""""""""""""""""""""""
 let g:winManagerWindowLayout='FileExplorer'
