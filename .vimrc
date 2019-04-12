@@ -144,6 +144,7 @@ set foldcolumn=2
 highlight Folded guibg=grey guifg=blue
 highlight FoldColumn guibg=black guifg=white
 set foldmethod=syntax
+let g:fastfold_fold_command_suffixes =  ['x','X','a','A']
 set nofoldenable
 """""""""""""""""""""""""<set tab space>""""""""""""""""""""""""
 ""tab=space setting for different editors
