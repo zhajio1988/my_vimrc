@@ -1,0 +1,9 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_1='/home/zhajio/intelFPGA/16.1/modelsim_ase/examples/UVM_Framework/UVMF_3.6d/templates/python/uvmf_template_output/project_benches/chip/tb/sequences'
+let g:netrw_dirhist_2='/home/zhajio/intelFPGA/16.1/modelsim_ase/examples/UVM_Framework/UVMF_3.6d/templates/python/uvmf_template_output/project_benches/chip/tb/testbench'
+let g:netrw_dirhist_3='/home/zhajio/intelFPGA/16.1/modelsim_ase/examples/UVM_Framework/UVMF_3.6d/templates/python/uvmf_template_output/project_benches/chip/tb'
+let g:netrw_dirhist_4='/home/zhajio/intelFPGA/16.1/modelsim_ase/examples/UVM_Framework/UVMF_3.6d/templates/python/uvmf_template_output/project_benches/chip/tb/tests'
+let g:netrw_dirhist_5='/home/zhajio/intelFPGA/16.1/modelsim_ase/examples/UVM_Framework/UVMF_3.6d/templates/python/uvmf_template_output/project_benches/chip/tb/tests/src'
+let g:netrw_dirhist_6='/home/zhajio/intelFPGA/16.1/modelsim_ase/examples/UVM_Framework/UVMF_3.6d/templates/python/uvmf_template_output/project_benches/chip/tb/tests'
+let g:netrw_dirhist_7='/home/zhajio/c++/blank-project/res'

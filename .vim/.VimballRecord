@@ -1,0 +1,2 @@
+tagbar.vmb: call delete('/home/zhajio/.vim/LICENSE')|call delete('/home/zhajio/.vim/README.md')|call delete('/home/zhajio/.vim/autoload/tagbar.vim')|call delete('/home/zhajio/.vim/doc/tagbar.txt')|call delete('/home/zhajio/.vim/plugin/tagbar.vim')|call delete('/home/zhajio/.vim/syntax/tagbar.vim')
+supertab.vmb: call delete('/home/zhajio/.vim/doc/supertab.txt')|call delete('/home/zhajio/.vim/plugin/supertab.vim')
