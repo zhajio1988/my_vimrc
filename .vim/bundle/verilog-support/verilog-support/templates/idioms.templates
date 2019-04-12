@@ -1,0 +1,68 @@
+== Idioms.task ==
+virtual task |?METHODNAME| (<CURSOR>);
+endtask : |METHODNAME|
+== Idioms.function ==
+virtual function void |?METHODNAME| (<CURSOR>);
+endfunction : |METHODNAME|
+== Idioms.covergroup ==
+covergoup |?GROUP_NAME|;
+endcovergroup : |GROUP_NAME|
+== Idioms.Covergroup Sample ==
+covergroup |?GROUP_NAME| with function sample(input int var);
+    coverpoint var;
+endgroup : |GROUP_NAME|
+== Idioms.Coverpoint bins ==
+coverpoint |?COVER_VARIABLE| {
+    bins low = {0,1};
+    bins med = {2,3};
+    bins hi  = {4,5};
+}
+== Idioms.Timeformat ==
+// Print time in nanoseconds(-9), 5 figs after decimal, label, field width of 10
+$timeformat(-9, 5, " ns", 10);
+== UVM.Idioms.configdb_set == map:cdbs, insert ==
+uvm_config_db#(<CURSOR>)::set(this,"", "var_name", var_value);
+== UVM.Idioms.configdb_get == map:cdbg, insert ==
+uvm_config_db#(<CURSOR>)::get(this,"", "var_name", var);
+== UVM.Idioms.object_utils == map:ou ==
+`uvm_object_utils( |?CLASS_NAME| )
+== UVM.Idioms.object_utils_block == map:oub ==
+`uvm_object_utils_begin( |?CLASS_NAME| )
+<SPLIT>
+`uvm_object_utils_end
+== UVM.Idioms.component_utils == map:icu ==
+`uvm_component_utils( |?CLASS_NAME| )
+== UVM.Idioms.component_utils_block == map:icub ==
+`uvm_component_utils_begin( |?CLASS_NAME| )
+<SPLIT>
+`uvm_component_utils_end
+== UVM.Idioms.uvm_field_int == map:ufi ==
+    `uvm_field_int(<CURSOR>, UVM_DEFAULT)
+== UVM.Idioms.uvm_field_string == map:ufs ==
+    `uvm_field_string(<CURSOR>, UVM_DEFAULT)
+== UVM.Idioms.uvm_field_enum == map:ufe ==
+    `uvm_field_enum(<CURSOR>, <-ENUM_VAR->, UVM_DEFAULT)
+== UVM.Idioms.uvm_field_real == map:ufr ==
+    `uvm_field_real(<CURSOR>, UVM_DEFAULT)
+== UVM.Idioms.uvm_field_object == map:ufo ==
+    `uvm_field_object(<CURSOR>, UVM_DEFAULT)
+== UVM.Idioms.uvm_field_array_int == map:ufi ==
+    `uvm_field_array_int(<CURSOR>, UVM_DEFAULT)
+== UVM.Idioms.uvm_field_array_string == map:ufs ==
+    `uvm_field_array_string(<CURSOR>, UVM_DEFAULT)
+== UVM.Idioms.uvm_field_array_enum == map:ufe ==
+    `uvm_field_array_enum(<CURSOR>, <-ENUM_VAR->, UVM_DEFAULT)
+== UVM.Idioms.uvm_field_array_real == map:ufr ==
+    `uvm_field_array_real(<CURSOR>, UVM_DEFAULT)
+== UVM.Idioms.uvm_field_array_object == map:ufo ==
+    `uvm_field_array_object(<CURSOR>, UVM_DEFAULT)
+== UVM.Idioms.analysis_port == map:isu == 
+    uvm_analysis_port #(|?TYPE|) <CURSOR>_ap; // output a |TYPE|
+== UVM.Idioms.analysis_export == map:isu == 
+    uvm_analysis_export #(|?TYPE|) <CURSOR>_ae; // output a |TYPE|
+== UVM.Idioms.objection == 
+phase.raise_objection(this);
+<SPLIT>
+phase.drop_objection(this);
+
+== ENDTEMPLATE ==

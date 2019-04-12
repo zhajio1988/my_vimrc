@@ -1,0 +1,33 @@
+§ ==========================================================
+§  User Macros
+§ ==========================================================
+SetMacro( 'AUTHOR',      'YOUR NAME' )
+SetMacro( 'AUTHORREF',   '' )
+SetMacro( 'COMPANY',     '' )
+SetMacro( 'COPYRIGHT',   '' )
+SetMacro( 'EMAIL',       '' )
+SetMacro( 'LICENSE',     '' )
+SetMacro( 'ORGANIZATION','' )
+§ SetMacro( 'TASK_COMMENT','template: Comments.Task')
+§ SetMacro( 'FX_COMMENT',  'template: Comments.Function')
+§ SetMacro( 'EXE_COMMENT', 'call mmtemplates#core#InsertTemplate(g:SV_Templates, "Comments.end-of-line-comment") )
+
+SetStyle( 'default' )
+
+§ ==========================================================
+§  File Includes and Shortcuts
+§ ==========================================================
+
+MenuShortcut( 'UVM',        'U' )
+MenuShortcut( 'Idioms',     'i' )
+MenuShortcut( 'Modules',    'm' )
+§ MenuShortcut( 'Phase',      'p' )
+§ MenuShortcut( 'Variables',  'v' )
+
+IncludeFile( 'comments.templates' )
+IncludeFile( 'idioms.templates' )
+IncludeFile( 'class.templates' )
+IncludeFile( 'phase.templates' )
+IncludeFile( 'modules.templates' )
+§ IncludeFile( 'variables.templates' )
+IncludeFile( 'macros.templates' )

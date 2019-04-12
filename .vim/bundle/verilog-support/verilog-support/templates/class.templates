@@ -1,0 +1,450 @@
+§ We make use of some advanced features of the template engine that are
+§ currently undocumented.
+§
+§ Insert another templates using:
+§   |Insert('Comments.Function')|
+§
+§ Further options are given as additional arguments. The call:
+§   |Insert( 'Comments.Function', '|METHODNAME|', 'convert2string' )|
+§ will replace the macro |METHODNAME| in the template 'Comments.Function' with
+§ 'convert2string'.
+§
+§ The responsibility of inserting the cursor can be delegated to the inserted
+§ template using the '<CURSOR>' option:
+§   |Insert( 'Comments.Function', '<CURSOR>' )|
+
+== UVM.Classes.Test == 
+|Insert( 'Comments.Class description', '|CLASS_NAME|', '|?TEST|_test', '<CURSOR>' )|
+class |TEST|_test extends base_test;
+    `uvm_component_utils( |TEST|_test )
+
+    |Insert( 'Comments.Constructor')|
+    function new(input string name="|TEST|_test", uvm_component parent);
+        super.new(name, parent);
+    endfunction
+
+    |Insert( 'Comments.Task', '|METHODNAME|', 'run_phase' )|
+    virtual task run_phase(uvm_phase phase);
+        random_sequence seq;
+        super.run_phase(phase);
+
+        phase.raise_objection(this);
+        seq = random_sequence::type_id::create("seq");
+        seq.start(env.agent.seqr);
+        phase.drop_objection(this);
+    endtask : run_phase
+
+endclass : |TEST|_test
+== UVM.Classes.Sequence == map:cq, sc:s, noindent == 
+|Insert( 'Comments.Class description', '<CURSOR>')|
+class |CLASS_NAME| extends uvm_sequence #(|?SEQ_ITEM|);
+
+    `uvm_object_utils(|CLASS_NAME|)
+
+    |Insert( 'Comments.Constructor')|
+    function new(input string name="|CLASS_NAME|");
+        super.new(name);
+    endfunction
+
+    |Insert( 'Comments.Task', '|METHODNAME|', 'body' )|
+    virtual task body();
+        |SEQ_ITEM| req;
+
+        req = |SEQ_ITEM|::type_id::create("req");
+        start_item(req);
+        if(!req.randomize()) `uvm_fatal(get_name(), "Failed to randomize")
+        finish_item(req);
+    endtask
+
+endclass : |CLASS_NAME|
+== UVM.Classes.Sequence Item == map:csi, sc:i, noindent == 
+|Insert( 'Comments.Class description', '|CLASS_NAME|', '|?TYPE|_seq_item', '<CURSOR>')|
+class |TYPE|_seq_item extends uvm_sequence_item;
+    // Variables
+
+    `uvm_object_utils_begin(|TYPE|_seq_item)
+    `uvm_object_utils_end
+
+    // Constraints
+
+    |Insert( 'Comments.Constructor')|
+    function new(input string name="|TYPE|_seq_item");
+        super.new(name);
+    endfunction
+
+    |Insert( 'Comments.Task', '|METHODNAME|', 'convert2string', '<CURSOR>' )|
+    virtual function string convert2string();
+        string s;
+        $sformat(s, "I'm a |TYPE|_seq_item");
+        return s;
+    endfunction
+
+endclass : |TYPE|_seq_item
+typedef uvm_sequencer#(|TYPE|_seq_item) |TYPE|_sequencer;
+== UVM.Classes.Agent == map:ca, sc:a, noindent == 
+|Insert( 'Comments.Class description', '<CURSOR>')|
+class |?AGENT_TYPE|_agent extends uvm_agent;
+    protected uvm_active_passive_enum is_active = UVM_ACTIVE;
+
+    |?AGENT_TYPE|_driver    driver;
+    |AGENT_TYPE|_monitor   mon;
+    |AGENT_TYPE|_sequencer seqr;
+
+    `uvm_component_utils_begin(|AGENT_TYPE|_agent)
+        `uvm_field_enum(uvm_active_passive_enum, is_active, UVM_ALL_ON)
+    `uvm_component_utils_end
+
+    |Insert( 'Comments.Constructor')|
+    function new(input string name="|AGENT_TYPE|_agent", uvm_component parent);
+        super.new(name, parent);
+    endfunction
+
+    |Insert( 'Comments.Function', '|METHODNAME|', 'build_phase' )|
+    virtual function void build_phase(uvm_phase phase);
+        super.build_phase(phase);
+        if(is_active == UVM_ACTIVE) begin
+            seqr = |AGENT_TYPE|_sequencer::type_id::create("seqr", this);
+            driver = |AGENT_TYPE|_driver::type_id::create("driver", this);
+        end
+        mon = |AGENT_TYPE|_monitor::type_id::create("mon", this);
+    endfunction : build_phase
+
+    |Insert( 'Comments.Function', '|METHODNAME|', 'connect_phase' )|
+    virtual function void connect_phase(uvm_phase phase);
+        super.connect_phase(phase);
+        if(is_active == UVM_ACTIVE) begin
+            driver.seq_item_port.connect(seqr.seq_item_export);
+        end
+        <-CONNECT_CODE->
+    endfunction : connect_phase
+
+endclass : |AGENT_TYPE|_agent
+== UVM.Classes.Monitor == map:cm, noindent ==
+|Insert( 'Comments.Class description', '<CURSOR>')|
+class |?MON_TYPE|_monitor extends uvm_monitor;
+    virtual |MON_TYPE|_if vif;
+    string monitor_intf;
+
+    uvm_analysis_port #(|MON_TYPE|_seq_item) item_collected_port;
+    |MON_TYPE|_seq_item data_collected;
+    |MON_TYPE|_seq_item data_clone;
+
+    `uvm_component_utils_begin(|MON_TYPE|_monitor)
+        `uvm_field_string(monitor_intf, UVM_ALL_ON)
+    `uvm_component_utils_end
+
+    |Insert( 'Comments.Constructor')|
+    function new(input string name="|MON_TYPE|_monitor", uvm_component parent);
+        super.new(name, parent);
+    endfunction
+
+    |Insert( 'Comments.Function', '|METHODNAME|', 'build_phase' )|
+    virtual function void build_phase(uvm_phase phase);
+        super.build_phase(phase);
+        if(!uvm_config_db#(string)::get(this, "", "monitor_intf", monitor_intf)) begin
+            `uvm_fatal("NOSTRING", {"Need interface name for: ", get_full_name(), ".monitor_intf"})
+        end
+        if(!uvm_config_db#(virtual |MON_TYPE|_if)::get(this, "",monitor_intf, vif)) begin
+            `uvm_fatal("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
+        end
+        item_collected_port = new("item_collected_port", this);
+        data_collected = |MON_TYPE|_seq_item::type_id::create("data_collected");
+        data_clone = |MON_TYPE|_seq_item::type_id::create("data_clone");
+    endfunction : build_phase
+
+    |Insert( 'Comments.Task', '|METHODNAME|', 'run_phse', '<CURSOR>' )|
+    virtual task run_phase(uvm_phase phase);
+        fork
+            collect_data();
+            <-ADDITIONAL_RUN_THREADS->
+        join_none
+    endtask : run_phase
+
+    |Insert( 'Comments.Task', '|METHODNAME|', 'collect_data', '<CURSOR>' )|
+    virtual task collect_data();
+        forever begin
+            <-ACCESS_VIF_CODE->
+            $cast(data_clone, data_collected.clone());
+            item_collected_port.write(data_clone);
+        end
+    endtask : collect_data
+
+    |Insert( 'Comments.Function', '|METHODNAME|', 'report_phase' )|
+    virtual function void report_phase(uvm_phase phase);
+        <-REPORT_CODE->
+    endfunction : report_phase
+
+endclass : |MON_TYPE|_monitor
+== UVM.Classes.Driver == map:cd, noindent ==
+|Insert( 'Comments.Class description', '<CURSOR>')|
+class |?DRIVER_TYPE|_driver extends uvm_driver #(|DRIVER_TYPE|_seq_item);
+    virtual |DRIVER_TYPE|_if vif;
+    string |DRIVER_TYPE|_intf;
+
+    `uvm_component_utils_begin(|DRIVER_TYPE|_driver)
+        `uvm_field_string(|DRIVER_TYPE|_intf, UVM_ALL_ON)
+    `uvm_component_utils_end
+
+    |Insert( 'Comments.Constructor')|
+    function new(input string name="|DRIVER_TYPE|_driver", uvm_component parent);
+        super.new(name, parent);
+    endfunction
+
+    |Insert( 'Comments.Function', '|METHODNAME|', 'build_phase' )|
+    virtual function void build_phase(uvm_phase phase);
+        super.build_phase(phase);
+        if(!uvm_config_db#(string)::get(this, "", "|DRIVER_TYPE|_intf", |DRIVER_TYPE|_intf)) begin
+            `uvm_fatal("NOSTRING", {"Need interface name for: ", get_full_name(), ".|DRIVER_TYPE|_intf"})
+        end
+        if(!uvm_config_db#(virtual |DRIVER_TYPE|_if)::get(this, "",|DRIVER_TYPE|_if, vif)) begin
+            `uvm_fatal("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"})
+        end
+    endfunction : build_phase
+
+    |Insert( 'Comments.Task', '|METHODNAME|', 'run_phase', '<CURSOR>' )|
+    virtual task run_phase(uvm_phase phase);
+        fork
+            reset();
+            get_and_drive();
+            <-ADDITIONAL_RUN_THREADS->
+        join_none
+    endtask : run_phase
+
+    |Insert( 'Comments.Task', '|METHODNAME|', 'reset', '<CURSOR>' )|
+    virtual task reset();
+        <-RESET_PROCEDURE->
+    endtask : reset
+
+    |Insert( 'Comments.Task', '|METHODNAME|', 'get_and_drive', '<CURSOR>' )|
+    virtual task get_and_drive();
+        forever begin
+            <-WAIT_FOR_RESET->
+            seq_item_port.get_next_item(req);
+            drive_packet(req);
+            seq_item_port.item_done();
+        end
+    endtask : get_and_drive
+
+    |Insert( 'Comments.Task', '|METHODNAME|', 'drive_packet', '<CURSOR>' )|
+    virtual task drive_packet(|DRIVER_TYPE|_seq_item pkt);
+        <-DRIVE_VIRTUAL_INTERFACE->
+    endtask : drive_packet
+
+endclass : |DRIVER_TYPE|_driver
+== UVM.Classes.Layer.Subscriber Layering == 
+|Insert( 'Comments.Class description', '<CURSOR>')|
+class |?UPPER|_to_|?LOWER|_layering extends uvm_subscriber #(|LOWER|_seq_item);
+    `uvm_component_utils( |UPPER|_to_|LOWER|_layering )
+ 
+    |Insert( 'Comments.Variable', '|VARNAME|', '|UPPER|_seqr', '|PURPOSE|', 'Upper layer sequencer to start sequences on')|
+    |UPPER|_sequencer |UPPER|_seqr;
+
+    |Insert( 'Comments.Variable', '|VARNAME|', 'lower_agent', '|PURPOSE|', 'Pointer to lower  layer agent')|
+    |LOWER|_agent lower_agent;
+ 
+    |Insert( 'Comments.Variable', '|VARNAME|', 'ap', '|PURPOSE|', 'Analysis port to pass item up')|
+    uvm_analysis_port#(|UPPER|_seq_item) ap;
+
+    |Insert( 'Comments.Constructor')|
+    function new(string name, uvm_component parent=null);
+        super.new(name, parent);
+    endfunction
+ 
+    |Insert( 'Comments.Function', '|METHODNAME|', 'build_phase' )|
+    function void build_phase(uvm_phase phase);
+        |UPPER|_seqr = |UPPER|_sequencer::type_id::create("|UPPER|_seqr",this);
+    endfunction
+
+    |Insert( 'Comments.Task', '|METHODNAME|', 'run_phase' )|
+    virtual task run_phase(uvm_phase phase);
+        // AtoB_seq a2b_seq;
+        |UPPER|_to_|LOWER|_seq b2c_seq;
+    
+        // a2b_seq = AtoB_seq::type_id::create("a2b_seq");
+        b2c_seq = |UPPER|_to_|LOWER|_seq::type_id::create("b2c_seq");
+    
+        // connect translation sequences to their respective upstream sequencers
+        // a2b_seq.up_sequencer = a_sequencer;
+        b2c_seq.up_sequencer = |UPPER|_seqr;
+    
+        // start the translation sequences
+        fork
+            // a2b_seq.start(b_sequencer);
+            b2c_seq.start(lower_agent.seqr);
+        join_none
+    endtask
+
+    |Insert( 'Comments.Function', '|METHODNAME|', 'write')|
+    function void write( |LOWER|_seq_item t);
+        |UPPER|_seq_item upper_item;
+        // <-Create Upper from Lower->
+        ap.write(upper_item);
+    endfunction
+    
+endclass : |UPPER|_to_|LOWER|_layering
+== UVM.Classes.Layer.Component Layering == 
+|Insert( 'Comments.Class description', '<CURSOR>')|
+class |?UPPER|_to_|?LOWER|_layering extends uvm_component;
+    `uvm_component_utils( |UPPER|_to_|LOWER|_layering )
+ 
+    |Insert( 'Comments.Variable', '|VARNAME|', '|UPPER|_seqr', '|PURPOSE|', 'Upper layer sequencer to start sequences on')|
+    |UPPER|_sequencer |UPPER|_seqr;
+
+    |Insert( 'Comments.Variable', '|VARNAME|', 'lower_agent', '|PURPOSE|', 'Pointer to lower  layer agent')|
+    |LOWER|_agent lower_agent;
+ 
+    |Insert( 'Comments.Variable', '|VARNAME|', 'ap', '|PURPOSE|', 'Analysis port to pass item up')|
+    uvm_analysis_port#(|UPPER|_seq_item) ap;
+
+    |Insert( 'Comments.Constructor')|
+    function new(string name, uvm_component parent=null);
+        super.new(name, parent);
+    endfunction
+ 
+    |Insert( 'Comments.Function', '|METHODNAME|', 'build_phase' )|
+    function void build_phase(uvm_phase phase);
+        |UPPER|_seqr = |UPPER|_sequencer::type_id::create("|UPPER|_seqr",this);
+    endfunction
+
+    |Insert( 'Comments.Task', '|METHODNAME|', 'run_phase' )|
+    virtual task run_phase(uvm_phase phase);
+        // AtoB_seq a2b_seq;
+        |UPPER|_to_|LOWER|_seq b2c_seq;
+    
+        // a2b_seq = AtoB_seq::type_id::create("a2b_seq");
+        b2c_seq = |UPPER|_to_|LOWER|_seq::type_id::create("b2c_seq");
+    
+        // connect translation sequences to their respective upstream sequencers
+        // a2b_seq.up_sequencer = a_sequencer;
+        b2c_seq.up_sequencer = |UPPER|_seqr;
+    
+        // start the translation sequences
+        fork
+            // a2b_seq.start(b_sequencer);
+            b2c_seq.start(lower_agent.seqr);
+        join_none
+    endtask
+
+endclass : |UPPER|_to_|LOWER|_layering
+== UVM.Classes.Layer.Translator Sequence ==
+|Insert( 'Comments.Class description' ,'|CLASS_NAME|', '|?UPPER|_to_|?LOWER|_seq', '<CURSOR>')|
+class |UPPER|_to_|LOWER|_seq extends uvm_sequence #(|LOWER|_seq_item);
+    `uvm_object_utils(|UPPER|_to_|LOWER|_seq)
+ 
+    |Insert( 'Comments.Constructor')|
+    function new(string name="");
+        super.new(name);
+    endfunction
+    
+    |Insert( 'Comments.Variable', '|VARNAME|', 'up_sequencer', '|PURPOSE|', 'Upper layer sequencer to start sequences on')|
+    uvm_sequencer #(|UPPER|_seq_item) up_sequencer; 
+    
+    |Insert( 'Comments.Task', '|METHODNAME|', 'body' )|
+    virtual task body();
+        |UPPER|_seq_item upper_item;
+        |LOWER|_seq_item down_item;
+        int i;
+        forever begin
+            up_sequencer.get_next_item(upper_item);
+            down_item = |LOWER|_seq_item::type_id::create();
+    
+            start_item(down_item);
+            // down_item <== upper_item;
+            // <-CONVERT UPPER TO LOWER->
+            finish_item(down_item);
+            up_sequencer.item_done();
+        end
+    endtask
+endclass : |UPPER|_to_|LOWER|_seq
+== UVM.Classes.Test == 
+|Insert( 'Comments.Class description', '|CLASS_NAME|', '|?TEST|_test', '<CURSOR>' )|
+class |TEST|_test extends base_test;
+    `uvm_component_utils( |TEST|_test )
+
+    |Insert( 'Comments.Constructor')|
+    function new(input string name="|TEST|_test", uvm_component parent);
+        super.new(name, parent);
+    endfunction
+
+    |Insert( 'Comments.Task', '|METHODNAME|', 'run_phase' )|
+    virtual task run_phase(uvm_phase phase);
+        random_sequence seq;
+        super.run_phase(phase);
+
+        phase.raise_objection(this);
+        seq = random_sequence::type_id::create("seq");
+        seq.start(env.agent.seqr);
+        phase.drop_objection(this);
+    endfunction : run_phase
+
+endclass : |TEST|_test
+== UVM.Classes.Config ==
+|Insert( 'Comments.Class description', '|CLASS_NAME|', '|?TYPE|_config', '<CURSOR>' )|
+class |TYPE|_config extends uvm_object;
+    `uvm_object_utils(|TYPE|_config)
+
+    |Insert( 'Comments.Constructor')|
+    function new(string name="|TYPE|_config");
+        super.new(name);
+    endfunction
+    
+    |Insert( 'Comments.Task', '|METHODNAME|', 'convert2string', '<CURSOR>' )|
+    virtual function string convert2string();
+        string s;
+        $sformat(s, "I'm a |TYPE|_config");
+        return s;
+    endfunction
+
+endclass : |TYPE|_config
+== UVM.Classes.Scoreboard ==
+|Insert( 'Comments.Class description', '|CLASS_NAME|', '|?TYPE|_scoreboard', '<CURSOR>' )|
+class |TYPE|_scoreboard extends uvm_scoreboard;
+    uvm_tlm_analysis_fifo #(|TYPE|_seq_item) expect_data_fifo;
+    uvm_tlm_analysis_fifo #(|TYPE|_seq_item) actual_data_fifo;
+
+    |TYPE|_seq_item expect_data;
+    |TYPE|_seq_item actual_data;
+
+    `uvm_component_utils( |TYPE|_scoreboard )
+
+    |Insert( 'Comments.Constructor')|
+    function new(input string name="|TYPE|_scoreboard", uvm_component parent);
+        super.new(name, parent);
+        expect_data_fifo = new("expect_data_fifo");
+        actual_data_fifo = new("actual_data_fifo");
+    endfunction
+    
+    |Insert( 'Comments.Task', '|METHODNAME|', 'run_phase' )|
+    virtual task run_phase(uvm_phase phase);
+        super.run_phase(phase);
+        forever begin
+            expect_data_fifo.get(expect_data);
+            actual_data_fifo.get(actual_data);
+            expect_data.compare(actual_data);
+        end
+    endtask : run_phase
+
+endclass : |TYPE|_scoreboard
+== UVM.Classes.Predictor ==
+|Insert( 'Comments.Class description', '|CLASS_NAME|', '|?TYPE|_predictor', '<CURSOR>' )|
+class |TYPE|_predictor extends uvm_subscriber #(|?INPUT_TYPE|);
+
+    uvm_analysis_port #(|?OUTPUT_TYPE|) predicted_ap;
+
+    `uvm_component_utils( |TYPE|_predictor )
+
+    |Insert( 'Comments.Constructor')|
+    function new(input string name="|TYPE|_predictor", uvm_component parent);
+        super.new(name, parent);
+        predicted_ap = new("predicted_ap");
+    endfunction
+    
+    |Insert( 'Comments.Function', '|METHODNAME|', 'write')|
+    function void write( |INPUT_TYPE| t);
+        |OUTPUT_TYPE| out_item;
+        // <-Create an |OUTPUT_TYPE| from the |INPUT_TYPE| ->
+        predicted_ap.write(out_item);
+    endfunction
+
+endclass : |TYPE|_predictor
+== ENDTEMPLATE ==
