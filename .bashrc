@@ -151,3 +151,5 @@ export UVM_HOME=$MODELSIM_DIR/verilog_src/uvm-1.2
 
 export PATH="$PATH:${MODELSIM_DIR}/bin"
 export VERILATOR_ROOT=/usr/share/verilator
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
