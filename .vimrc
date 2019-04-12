@@ -13,8 +13,6 @@ let mapleader = "\\"
 
 execute pathogen#infect()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""let $VIMRUNTIME = "/usr/share/vim/$ver"
-""let $SYNTAX =  "/usr/share/vim/$ver/syntax"
 ""runtimepath
 set rtp+=~/.fzf
 """"""""""""""""""""<color scheme setting>""""""""""""""""""
