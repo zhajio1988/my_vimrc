@@ -5,7 +5,7 @@
 ""let $USER = "jzhang8" 
 let VERSION=v:version
 if VERSION==704
-        let $ver = "vim72"
+    let $ver = "vim72"
 endif
 
 "define prefix of shortcut key, as well as <Leader>
@@ -15,7 +15,8 @@ execute pathogen#infect()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""let $VIMRUNTIME = "/usr/share/vim/$ver"
 ""let $SYNTAX =  "/usr/share/vim/$ver/syntax"
-
+""runtimepath
+set rtp+=~/.fzf
 """"""""""""""""""""<color scheme setting>""""""""""""""""""
 ""vim color scheme setting 
 set background=dark
