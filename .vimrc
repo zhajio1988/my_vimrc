@@ -39,6 +39,7 @@ nnoremap <leader>i :VerilogFollowInstance<CR>
 nnoremap <leader>I :VerilogFollowPort<CR>
 nnoremap <leader>u :VerilogGotoInstanceStart<CR>
 let g:SuperTabDefaultCompletionType = 'context'
+let g:tagbar_ctags_bin='/home/zhajio/bin/bin/exctags'
 nmap <F8> :TagbarToggle<CR> 
 """"""""""""""""""""""""""<minibuf>""""""""""""""""""""""""""""
 let g:miniBufExplMapCTabSwitchBufs=1
