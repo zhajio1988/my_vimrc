@@ -34,19 +34,28 @@ set cscopetag
 let g:winManagerWindowLayout='FileExplorer'
 nmap wm :WMToggle<cr>
 
-""""""""""
+""""""""""verilog systemverilog mode"""""""""""""""""""""""""""
 nnoremap <leader>i :VerilogFollowInstance<CR>
 nnoremap <leader>I :VerilogFollowPort<CR>
 nnoremap <leader>u :VerilogGotoInstanceStart<CR>
+""supertab
 let g:SuperTabDefaultCompletionType = 'context'
+""tagbar
 let g:tagbar_ctags_bin='/home/zhajio/bin/bin/exctags'
 let g:tagbar_autofocus = 1
-nmap <F8> :TagbarToggle<CR> 
+nmap <F4> :TagbarToggle<CR> 
 """"""""""""""""""""""""""<minibuf>""""""""""""""""""""""""""""
 let g:miniBufExplMapCTabSwitchBufs=1
 let g:miniBufExplMapWindowsNavVim=1
 let g:miniBufExplMapWindowNavArrows=1
-
+""""""""""""""""""""""""""<EasyMotion>""""""""""""""""""""""""""""
+let g:EasyMotion_smartcase = 1
+"let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
+map <Leader><leader>h <Plug>(easymotion-linebackward)
+map <Leader><Leader>j <Plug>(easymotion-j)
+map <Leader><Leader>k <Plug>(easymotion-k)
+map <Leader><leader>l <Plug>(easymotion-lineforward)
+map <Leader><leader>. <Plug>(easymotion-repeat)
 """"""""""""""""""""""""""<localrc>""""""""""""""""""""""""""""
 let g:localrc_filename = '.uvmrc'
 let g:uvm_email = "jude.zhang@analog.com"
