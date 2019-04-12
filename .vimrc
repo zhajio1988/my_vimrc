@@ -29,7 +29,7 @@ let Tlist_Exit_OnlyWindow=1
 let Tlist_Use_Right_Window=1
 set cscopetag
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nmap <silent> <F4>  :TlistToggle<CR>
+nmap <silent> <F4> :TlistToggle<CR>
 
 """"""""""""""""""""""""<win_manager>""""""""""""""""""""""""""
 let g:winManagerWindowLayout='FileExplorer'
