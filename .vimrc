@@ -1,20 +1,13 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""modified by zhajio"""""""""""""""""""""""""""""""
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""let $USER = system("whoami")
-""let $USER = "jzhang8" 
-let VERSION=v:version
-if VERSION==704
-    let $ver = "vim72"
-endif
-
 "define prefix of shortcut key, as well as <Leader>
 let mapleader = "\\"
 
 execute pathogen#infect()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""runtimepath
-set rtp+=~/.fzf
+""runtimepath  fzf doesn't work
+""set rtp+=~/.fzf 
 """"""""""""""""""""<color scheme setting>""""""""""""""""""
 ""vim color scheme setting 
 set background=dark
