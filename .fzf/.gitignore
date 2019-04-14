@@ -1,5 +1,3 @@
-bin/fzf
-bin/fzf.exe
 target
 pkg
 Gemfile.lock
