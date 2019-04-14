@@ -167,7 +167,7 @@ autocmd Filetype verilog setlocal tabstop=3 softtabstop=3 shiftwidth=3 expandtab
 autocmd Filetype systemverilog setlocal tabstop=3 softtabstop=3 shiftwidth=3 expandtab 
 "autocmd Filetype python setlocal tabstop=3 softtabstop=3 shiftwidth=3 expandtab 
 autocmd FileType c,cpp :set cindent
-set smartindent 
+"set smartindent 
 set autoindent 
 "set cindent shiftwidth=4
 "
