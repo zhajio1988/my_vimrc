@@ -40,9 +40,9 @@ nnoremap <leader>u :VerilogGotoInstanceStart<CR>
 ""supertab
 let g:SuperTabDefaultCompletionType = 'context'
 ""tagbar
-let g:tagbar_ctags_bin='/home/zhajio/bin/bin/exctags'
+let g:tagbar_ctags_bin='~/bin/exctags'
 let g:tagbar_autofocus = 1
-nmap <F4> :TagbarToggle<CR> 
+nmap <silent> <F4> :TagbarToggle<CR>
 """"""""""""""""""""""""""<minibuf>""""""""""""""""""""""""""""
 let g:miniBufExplMapCTabSwitchBufs=1
 let g:miniBufExplMapWindowsNavVim=1
@@ -167,7 +167,7 @@ autocmd Filetype verilog setlocal tabstop=3 softtabstop=3 shiftwidth=3 expandtab
 autocmd Filetype systemverilog setlocal tabstop=3 softtabstop=3 shiftwidth=3 expandtab 
 "autocmd Filetype python setlocal tabstop=3 softtabstop=3 shiftwidth=3 expandtab 
 autocmd FileType c,cpp :set cindent
-"set smartindent 
+""set smartindent 
 set autoindent 
 "set cindent shiftwidth=4
 "
