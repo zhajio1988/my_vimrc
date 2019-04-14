@@ -41,9 +41,10 @@ pathogen.vim
 | 在normal状态下输入\a 	| 缩进混乱的sv文件，自动缩进 			|	
 | 在normal状态下输入"wm" | vim下管理窗口的插件，可以管理文件浏览器、缓冲区、taglist等窗口 |
 | 在normal状态下输入\a 	| 缩进混乱的sv文件，自动缩进 			|	
-| 在normal状态下输入"\\w or \\b" 	| 跳转到当前光标前后的位置		|	
-| 行级跳转("\\j \\k \\h \\l") |  hjkl 快速跳转 |
+| 在normal状态下输入\\\w \\\b | 跳转到当前光标前后的位置		|	
+| 行级跳转(\\\j \\\k \\\h \\\l) |  hjkl 快速跳转 |
 
 ## reference
 https://github.com/junegunn/fzf
+
 http://www.wklken.me/posts/2015/06/07/vim-plugin-easymotion.html
