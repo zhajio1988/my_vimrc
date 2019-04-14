@@ -6,6 +6,8 @@ jude's vimrc for DV work(fine tuning for SV/UVM)
 
 `git clone https://github.com/zhajio1988/my_vimrc.git`
 
+`cp my_vimrc/* ~/`
+
 ## plugin
 ```
 hl_matchit.vim  
