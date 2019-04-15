@@ -100,7 +100,6 @@ a l='ls -CF'
 a h="history"
 a l="ls -a -l -t -r "
 a lt="ls -atrl "
-a ls="ls -F"
 a ll="ls -lsag"
 a lm="ls -aslg | more"
 a lg="ls -lsag"
@@ -109,11 +108,11 @@ a dir="ls -lag | more"
 a clr="clear"
 a gr='find ./ |xargs grep -n -R --exclude-dir=.svn --color=auto'
 a gv="gvim -geom=185x45+0+10"
-a gf="gvim $(fzf)"
+a gf='gvim $(fzf)'
 a g="gv -geom=185x45-0+50"
 a gn='gvim -u "NONE"'
 a kt='"konsole --nofork --geometry=800x600&"'
-a fcd="cd $(find * -type d | fzf)"
+a fcd='cd $(find * -type d | fzf)'
 a py='~/Downloads/pycharm-community-2017.2.3/bin/pycharm.sh&'
 a p3='pip3 --proxy 10.5.112.53:80'
 
