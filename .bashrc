@@ -113,7 +113,7 @@ a gf="gvim $(fzf)"
 a g="gv -geom=185x45-0+50"
 a gn='gvim -u "NONE"'
 a kt='"konsole --nofork --geometry=800x600&"'
-
+a fcd="cd $(find * -type d | fzf)"
 a py='~/Downloads/pycharm-community-2017.2.3/bin/pycharm.sh&'
 a p3='pip3 --proxy 10.5.112.53:80'
 
@@ -145,12 +145,5 @@ fi
 
 export LD_LIBRARY_PATH=/usr/local/lib
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
-
-export INTELFPGA_TOOLDIR="/home/zhajio/intelFPGA/16.1"
-export MODELSIM_DIR=${INTELFPGA_TOOLDIR}/modelsim_ase
-export UVM_HOME=$MODELSIM_DIR/verilog_src/uvm-1.2
-
-export PATH="$PATH:${MODELSIM_DIR}/bin"
-export VERILATOR_ROOT=/usr/share/verilator
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
