@@ -109,8 +109,9 @@ a dir="ls -lag | more"
 a clr="clear"
 a gr='find ./ |xargs grep -n -R --exclude-dir=.svn --color=auto'
 a gv="gvim -geom=185x45+0+10"
+a gf="gvim $(fzf)"
 a g="gv -geom=185x45-0+50"
-a gf='gvim -u "NONE"'
+a gn='gvim -u "NONE"'
 a kt='"konsole --nofork --geometry=800x600&"'
 
 a py='~/Downloads/pycharm-community-2017.2.3/bin/pycharm.sh&'
