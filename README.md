@@ -49,6 +49,8 @@ pathogen.vim
 ## reference
 https://github.com/junegunn/fzf
 
+https://segmentfault.com/a/1190000015977368
+
 http://www.wklken.me/posts/2015/06/07/vim-plugin-easymotion.html
 
 http://www.wklken.me/posts/2015/06/07/vim-plugin-tagbar.html
