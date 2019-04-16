@@ -7,8 +7,8 @@
 #                                                                         #
 #                                                                         #
 ###########################################################################
-if ( -f /cad/adi/etc/cad.cshrc ) then
-  source /cad/adi/etc/cad.cshrc
+if ( -f /cad/xxx/etc/cad.cshrc ) then
+  source /cad/xxx/etc/cad.cshrc
 endif
 
 if ( -f $HOME/.cshrc.user ) then
