@@ -25,16 +25,6 @@ set savehist=100
 setenv EDITOR gvim
 setenv VISUAL vim
 
-#simvision settings
-setenv SIMVISIONOPTS "-source -waves -schematic"
-setenv SIMVISION_ENABLE_DATA_BROWSER 1
-
-#The path shown in the Directory field is determined by the SIMVISION_WORKDIR
-#environment variable. If you have not set this variable, the path is to the last directory
-#visited by any of the file browser forms. You can navigate to other directories to find the
-#database that you want to open.
-setenv SIMVISION_WORKDIR "/nobackup/jzhang8/"
-
 
 ##  To set your printer, uncomment the following line and change the example
 ##  to your specific printer
@@ -63,7 +53,17 @@ a       sosup     'soscmd update'
 a       sosdis    'soscmd discardco'
 a       soscoall  'find ./ -name "*.sv"|xargs -i{} soscmd co {}'
 
-#########################echo -n $host|cut -d. -f1 
+#svn command alias
+a       svndiff 'svn diff --diff-cmd "~/vim/svndiff"' 
+a       svnsub 'svn propset svn:keywords "Date Author Revision URL"' 
+a       svnext 'svn propset svn:externals -F "bin/svn_externals" .' 
+a       svnst "svn st | awk '/^[ACDIMR\?!~]/'" 
+# #!/bin/csh -f
+# set DIFF = "gvimdiff"
+# set left = ${6}
+# set right = ${7}
+# $DIFF -f $left $right
+#########################
 #  === set for Prompt ===
 #########################
 set     prompt_char="~"
@@ -77,33 +77,19 @@ a       ...       "cd ../.."
 a       ....      "cd ../../.."
 
 ## hyperlink ##
-a       incisive "cd /cad/adi/apps/cadence/incisive/linux/15.20-104/doc"
-a       bel      "cd /proj/belvedere/sos_jzhang8"
-a       bench    "cd /proj/belvedere/sos_jzhang8/dv/testbench"
-a       case     "cd /proj/belvedere/sos_jzhang8/dv/testcases" 
 
-a       ade      "cd /proj/ade9000/sos_jzhang8" 
-a       355      "cd /proj/aducm355/sos_jzhang8/top/digital/timers/dv" 
-a       eff      "cd /proj/effen_safeside/sos_jzhang8" 
-a       vip      "cd /cad/adi/apps/adi/vip"
-a       com      "cd /net/bdcntap.bdcdesign/bdc_cicpi1/microglue/yangling/svn_yangling/top_digital/tb/agents/common"
+
 
 ########################
 #  === set for gvim ===
 ########################
 set term = konsole 
-a   gv gvim -geom=+0+50
-a   g  gv -geom=-0+50
+a   gv gvim -geom=170x42+0+50
+a   g  gv -geom=170x42-0+50
 a   gf gvim -u "NONE"
 a   kt  "konsole --nofork --geometry=800x600&"
 
 a   psm "ps -ef|grep "`whoami`""
-
-setenv PATH "/home/jzhang8/python/bootstrap/bin:$HOME/bin:$HOME/share:/usr/local/bin:/usr/local/sbin:$HOME/custpath:$PATH"
-setenv PYTHONPATH "/home/jzhang8/Downloads/PoC-master/py:/home/jzhang8/python/bootstrap/lib/python2.7/site-packages:/home/jzhang8/share/Pmw-2.0.0/lib/python2.7/site-packages"
-
-a   hex "hex_convert.csh"
-a   cal "python /home/jzhang8/custpath/cal.py&"
 
 ########################
 #  ===some useful command===
