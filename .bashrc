@@ -106,13 +106,19 @@ a lg="ls -lsag"
 a la="ls -lsA"
 a dir="ls -lag | more"
 a clr="clear"
-a gr='find ./ |xargs grep -n -R --exclude-dir=.svn --color=auto'
+a gr='grep -n -R --exclude-dir=.svn --color=auto'
+
 a gv="gvim -geom=185x45+0+10"
 a gf='gvim $(fzf)'
 a g="gv -geom=185x45-0+50"
 a gn='gvim -u "NONE"'
 a kt='"konsole --nofork --geometry=800x600&"'
+
+a ..="cd .."
+a ...="cd ../.."
+a ....="cd ../../.."
 a fcd='cd $(find * -type d | fzf)'
+
 a py='~/Downloads/pycharm-community-2017.2.3/bin/pycharm.sh&'
 a p3='pip3 --proxy 10.5.112.53:80'
 
@@ -141,6 +147,30 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+_gvComplete()
+{
+    COMPREPLY=()
+    local cur=${COMP_WORDS[COMP_CWORD]};
+    local prev=${COMP_WORDS[COMP_CWORD-1]};
+    compopt -o nospace
+   COMPREPLY=( $(compgen  -d -f -- $cur) )
+    
+    #if [[ -d "${cur}" ]]; then
+    #    local pro=($(pwd))
+    #    cd ${cur}
+    #    cmd_opts=`ls`;
+    #    compopt -o nospace
+    #    COMPREPLY=($(compgen -W "${cmd_opts}" -- $cur))
+    #    cd $pro
+    #else
+    #    compopt -o nospace
+    #    COMPREPLY=( $(compgen  -d -f -- $cur) )
+    #fi
+
+    return 0
+}
+complete -F _gvComplete gv
 
 export LD_LIBRARY_PATH=/usr/local/lib
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
