@@ -68,7 +68,7 @@ if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)}\[\033[0;32m\]\u\[\033[00m\]: \[\033[0;34m\]\w\[\033[00m\]\$ '
 else
     if [[ -z $(git-branch-prompt) ]]; then
-        PS1='${debian_chroot:+($debian_chroot)}\[\033[0;32m\]\u\[\033[00m\]: \[\033[0;34m\]\w\[\033[00m\]\$ '
+        PS1='\[\033[0;32m\]\h\[\033[00m\]: \[\033[0;34m\]\w\[\033[00m\]\$ '
     else 
         PS1="\[\033[0;32m\]\$(git-branch-prompt)\[\033[0m\]: \[\033[0;34m\]\w\[\033[0m\]\$ "
     fi
@@ -103,36 +103,41 @@ fi
 #export HTTPS_PROXY="https://10.5.112.53:80"
 
 export PATH="$PATH"
-PATH=$PATH:$HOME/bin:$HOME/bin/bin
+PATH=$PATH:$HOME/bin
 # some more ls aliases
 alias a="alias"
 a ll='ls -alF'
 a la='ls -A'
 a l='ls -CF'
 a h="history"
-a l="ls -a -l -t -r "
-a lt="ls -atrl "
-a ll="ls -lsag"
+a l="ls -A -l -t -r "
+a lt="ls -Atrlh"
+a ll="ls -lsAgh"
 a lm="ls -aslg | more"
 a lg="ls -lsag"
 a la="ls -lsA"
 a dir="ls -lag | more"
 a clr="clear"
 a gr='grep -n -R --exclude-dir=.svn --color=auto'
-
 a gv="gvim -geom=185x45+0+10"
-a gf='gvim $(fzf)'
+a gf='gv $(fzf)'
 a g="gv -geom=185x45-0+50"
 a gn='gvim -u "NONE"'
-a kt='"konsole --nofork --geometry=800x600&"'
-
+# a diff=diff -qubr
+#a pd="pushd \!* > /dev/null ;"
 a ..="cd .."
 a ...="cd ../.."
 a ....="cd ../../.."
 a fcd='cd $(find * -type d | fzf)'
 
-a py='~/Downloads/pycharm-community-2017.2.3/bin/pycharm.sh&'
-a p3='pip3 --proxy 10.5.112.53:80'
+a kt='"konsole --nofork --geometry=800x600&"'
+a gt='gnome-terminal --geometry=80x24+0+10&'
+a pdf='evince'
+#a tee='2>&1 | tee'
+a svctags='exctags -R --sort=yes --extras=+q --fields=+i --languages=SystemVerilog `pwd`'
+a cctags='exctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extras=+q --languages=C++ `pwd`'
+#-R --c++-kinds=+p --fields=+iaS --extra=+q
+a rm='rm -i'
 
 a psm='"ps -ef|grep "`whoami`""'
 a ps_apt='"ps -A | grep apt-get"'
