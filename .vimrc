@@ -20,6 +20,23 @@ colorscheme desert
 ""let Tlist_Exit_OnlyWindow=1
 ""let Tlist_Use_Right_Window=1
 ""nmap <silent> <F4> :TlistToggle<CR>
+" OmniCppComplete
+filetype plugin on
+set completeopt=menuone,menu
+let OmniCpp_MayCompleteDot=1 
+let OmniCpp_MayCompleteArrow=1 
+let OmniCpp_MayCompleteScope=1
+let OmniCpp_NamespaceSearch=1
+let OmniCpp_GlobalScopeSearch=1
+let OmniCpp_DefaultNamespaces=["std"]
+let OmniCpp_ShowPrototypeInAbbr=1 
+let OmniCpp_SelectFirstItem = 2
+" automatically open and close the popup menu / preview window
+au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+
+highlight Pmenu    guibg=darkgrey  guifg=black
+highlight PmenuSel guibg=lightgrey guifg=black
+
 set cscopetag
 
 """"""""""""""""""""""""<win_manager>""""""""""""""""""""""""""
@@ -31,7 +48,9 @@ nnoremap <leader>i :VerilogFollowInstance<CR>
 nnoremap <leader>I :VerilogFollowPort<CR>
 nnoremap <leader>u :VerilogGotoInstanceStart<CR>
 ""supertab
-let g:SuperTabDefaultCompletionType = 'context'
+"let g:SuperTabDefaultCompletionType = 'context'
+let g:SuperTabRetainCompletionType = 2
+let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
 ""tagbar
 let g:tagbar_ctags_bin='~/bin/exctags'
 let g:tagbar_autofocus = 1
@@ -53,7 +72,7 @@ let g:localrc_filename = '.uvmrc'
 let g:uvm_email = "jude.zhang@analog.com"
 "
 """"""""""""""""""""""""""<matchit>""""""""""""""""""""""""""""
-runtime macros/matchit.vim
+let g:hl_matchit_enable_on_vim_startup = 1
 let b:match_words='\<begin\>:\<end\>,'
             \.'\<class\>:\<endclass\>,'
             \.'\<task\>:\<endtask\>,'
@@ -61,7 +80,8 @@ let b:match_words='\<begin\>:\<end\>,'
             \.'\<fork\>:\<join_any\>,'
             \.'\<fork\>:\<join_none\>,'
             \.'\<function\>:\<endfunction\>,'
-            \.'\<try\>:\<except\>,'
+            \.'\<case\>:\<endcase\>,'
+            \.'\<module\>:\<endmodule\>,'
             \.'\<block\>:\<endblock\>,'
             \.'\<if\>:\<endif\>,'
 
@@ -77,7 +97,6 @@ ab /b ///<
 """"""""""""""""""ctags list"""""""""""""""""""""""""""
 let $project_name = $PRJ_NAME
 set tags+=~/tags/uvm_tags
-set tags+=~/tags/uvm1.tags
 if $project_name =~ 'll'
 endif
 ""set tags+=~/tags/gmssl_tags
@@ -300,24 +319,36 @@ endfunction
 command -nargs=* ALL :call Allargs(<q-args>)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-map <F6> :call DefineDet()<cr>'s
+map <F5> :call DefineDet()<cr>'s
 function AddDefine()
     let s:classname = expand("%:r") 
     let s:extension = expand("%:e") 
-    call append(0,"`ifndef " . "__" . toupper(s:classname . "_" . s:extension) ."__")
-    call append(1,"`define " . "__" . toupper(s:classname . "_" . s:extension) ."__")
-    call append(2,"")
-    call append(3,"class " .expand("%:r") . " extends ;")
-    call append(4,"   `uvm_component_utils(" . s:classname . ")")
-    call append(5,"")
-    call append(6,"")
-    call append(7,"   function new(string name = \"" . s:classname . "\", uvm_component parent);")
-    call append(8,"      super.new(name, parent);")
-    call append(9,"   endfunction")
-    call append(10,"")
-    call append(11,"endclass")
-    call append(12,"")
-    call append(13,"`endif")
+    if s:extension =~ 'cpp' || s:extension =~ 'h' ||  s:extension =~ 'c'
+        call append(0,"#ifndef " . "__" . toupper(s:classname . "_" . s:extension) ."__")
+        call append(1,"#define " . "__" . toupper(s:classname . "_" . s:extension) ."__")
+        call append(2,"")
+        call append(3,"")
+        let s:botline = line("$")
+        call append(s:botline,"")
+        let s:botline1 = s:botline+1
+        call append(s:botline1,"#endif")
+        let s:botline2 = s:botline+2        
+    else 
+        call append(0,"`ifndef " . "__" . toupper(s:classname . "_" . s:extension) ."__")
+        call append(1,"`define " . "__" . toupper(s:classname . "_" . s:extension) ."__")
+        call append(2,"")
+        call append(3,"class " .expand("%:r") . " extends ;")
+        call append(4,"   `uvm_component_utils(" . s:classname . ")")
+        call append(5,"")
+        call append(6,"")
+        call append(7,"   function new(string name = \"" . s:classname . "\", uvm_component parent);")
+        call append(8,"      super.new(name, parent);")
+        call append(9,"   endfunction")
+        call append(10,"")
+        call append(11,"endclass")
+        call append(12,"")
+        call append(13,"`endif")
+    endif
     echohl WarningMsg | echo "Successful in adding the copyright." | echohl None
 endf
 
@@ -329,41 +360,64 @@ function DefineDet()
             return
         endif
         let n = n + 1" Verilog HDL
-au BufNewFile,BufRead *.v                       setf verilog
+au BufNewFile,BufRead *.v  setf verilog
     endwhile
     call AddDefine()
 endfunction
 
-map <F5> :call TitleDet()<cr>'s
+map <F6> :call TitleDet()<cr>'s
 
 function AddTitle()
-    call append(0,"// ***********************************************************************")
-    call append(1,"// *****************                                                       ")
-    call append(2,"// ***** ***********                                                       ")
-    call append(3,"// *****   *********       Copyright (c) ".strftime("%Y"). " Analog Devices")
-    call append(4,"// *****     *******               (BJ EMP group)                          ")
-    call append(5,"// *****       *****         Analog Devices Confidential                   ")
-    call append(6,"// *****     *******             All rights reserved                       ")
-    call append(7,"// *****   *********                                                       ")
-    call append(8,"// ***** ***********                                                       ")
-    call append(9,"// *****************                                                       ")
-    call append(10,"// ***********************************************************************")
-    call append(11,"// PROJECT        : ".$project_name)
-    call append(12,"// FILENAME       : ".expand("%:t"))
-    call append(13,"// Author         : ".toupper($USER)." [". g:uvm_email ."]")
-    call append(14,"// LAST MODIFIED  : ".strftime("%Y-%m-%d %H:%M"))
-    call append(15,"// ***********************************************************************")
-    call append(16,"// DESCRIPTION    :")    
-    call append(17,"// ***********************************************************************")    
-    call append(18,"// $Revision: $")
-    call append(19,"// $Id: $")
-    call append(20,"// ***********************************************************************")    
-    let s:botline = line("$")
-    call append(s:botline,"// ***********************************************************************")
-    let s:botline1 = s:botline+1
-    call append(s:botline1,"// $Log: $")
-    let s:botline2 = s:botline+2
-    ""call append(s:botline2,"// $Revision $")
+    let s:extension = expand("%:e") 
+    if s:extension =~ 'cpp' || s:extension =~ 'h' ||  s:extension =~ 'c'
+        call append(0,"// ***********************************************************************")
+        call append(1,"//                 Copyright (c) 2019.                                    ")
+        call append(2,"//             PICOCOMTECH®  ALL RIGHTS RESERVED                          ")
+        call append(3,"// ***********************************************************************")
+        call append(4,"// PROJECT        : ".$project_name)
+        call append(5,"// FILENAME       : ".expand("%:t"))
+        call append(6,"// Author         : ".toupper($USER))
+        call append(7,"// LAST MODIFIED  : ".strftime("%Y-%m-%d %H:%M"))
+        call append(8,"// ***********************************************************************")
+        call append(9,"// DESCRIPTION    :")    
+        call append(10,"// ***********************************************************************")    
+        call append(11,"// $Revision: $")
+        call append(12,"// $Id: $")
+        call append(13,"// ***********************************************************************")    
+        let s:botline = line("$")
+        call append(s:botline,"// ***********************************************************************")
+        let s:botline1 = s:botline+1
+        call append(s:botline1,"// $Log: $")
+        let s:botline2 = s:botline+2
+    else
+        call append(0,"// ***********************************************************************")
+        call append(1,"// *****************                                                       ")
+        call append(2,"// ***** ***********                                                       ")
+        call append(3,"// *****   *********       Copyright (c) ".strftime("%Y"). " Analog Devices")
+        call append(4,"// *****     *******               (BJ EMP group)                          ")
+        call append(5,"// *****       *****         Analog Devices Confidential                   ")
+        call append(6,"// *****     *******             All rights reserved                       ")
+        call append(7,"// *****   *********                                                       ")
+        call append(8,"// ***** ***********                                                       ")
+        call append(9,"// *****************                                                       ")
+        call append(10,"// ***********************************************************************")
+        call append(11,"// PROJECT        : ".$project_name)
+        call append(12,"// FILENAME       : ".expand("%:t"))
+        call append(13,"// Author         : ".toupper($USER)." [". g:uvm_email ."]")
+        call append(14,"// LAST MODIFIED  : ".strftime("%Y-%m-%d %H:%M"))
+        call append(15,"// ***********************************************************************")
+        call append(16,"// DESCRIPTION    :")    
+        call append(17,"// ***********************************************************************")    
+        call append(18,"// $Revision: $")
+        call append(19,"// $Id: $")
+        call append(20,"// ***********************************************************************")    
+        let s:botline = line("$")
+        call append(s:botline,"// ***********************************************************************")
+        let s:botline1 = s:botline+1
+        call append(s:botline1,"// $Log: $")
+        let s:botline2 = s:botline+2
+        ""call append(s:botline2,"// $Revision $")
+    endif
     echohl WarningMsg | echo "Successful in adding the copyright." | echohl None
 endf
 
