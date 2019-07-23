@@ -135,7 +135,7 @@ a gt='gnome-terminal --geometry=80x24+0+10&'
 a pdf='evince'
 #a tee='2>&1 | tee'
 a svctags='exctags -R --sort=yes --extras=+q --fields=+i --languages=SystemVerilog `pwd`'
-a cctags='exctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extras=+q --languages=C++ `pwd`'
+a cctags='exctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extras=+q --languages=C++,C `pwd`'
 #-R --c++-kinds=+p --fields=+iaS --extra=+q
 a rm='rm -i'
 
