@@ -685,6 +685,6 @@ if version >= 508 || !exists("did_verilog_syn_inits")
    HiLink uvmTodo                Todo
    delcommand HiLink
 endif
-let b:current_syntax = "verilog_systemverilog"
+let b:current_syntax = "systemverilog"
 " vim: ts=8
 

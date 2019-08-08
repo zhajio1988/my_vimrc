@@ -1,0 +1,30 @@
+[diff]
+	tool = gvimdiff
+[difftool]
+	prompt = No
+[merge]
+	tool = gvimdiff
+[mergetool]
+	prompt = false
+[alias]
+	d = difftool
+    ds = diff --staged
+    st = status
+    co = checkout
+    br = branch
+    ci = commit
+    mg = merge
+    last = log -1 HEAD
+    latest = for-each-ref --sort=-committerdate --format=\"%(committername)@%(refname:short) [%(committerdate:short)] %(contents)\"
+    ls = log --pretty=format:\"%C(yellow)%h %C(blue)%ad %C(red)%d %C(reset)%s %C(green)[%cn]\" --decorate --date=short
+    hist = log --pretty=format:\"%C(yellow)%h %C(red)%d %C(reset)%s %C(green)[%an] %C(blue)%ad\" --topo-order --graph --date=short
+    type = cat-file -t
+    dump = cat-file -p
+    lg = log --color --graph --pretty=format:'%C(red)%h%C(reset) -%C(yellow)%d%C(reset) %s %C(green)(%cr) %C(bold blue)<%an>%C(reset)' --abbrev-commit    
+	sbi = submodule init
+	sbu = submodule update --init --recursive 
+	sbp = submodule foreach git pull
+	sbc = submodule foreach git co master    
+[user]
+	name = jiongz
+	email = jiongz@huanghe.pct.bj

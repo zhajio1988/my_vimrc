@@ -20,6 +20,7 @@ colorscheme desert
 ""let Tlist_Exit_OnlyWindow=1
 ""let Tlist_Use_Right_Window=1
 ""nmap <silent> <F4> :TlistToggle<CR>
+
 " OmniCppComplete
 filetype plugin on
 set completeopt=menuone,menu
@@ -44,13 +45,14 @@ let g:winManagerWindowLayout='FileExplorer'
 nmap wm :WMToggle<cr>
 
 """"""""""verilog systemverilog mode"""""""""""""""""""""""""""
-nnoremap <leader>i :VerilogFollowInstance<CR>
-nnoremap <leader>I :VerilogFollowPort<CR>
-nnoremap <leader>u :VerilogGotoInstanceStart<CR>
+""nnoremap <leader>i :VerilogFollowInstance<CR>
+""nnoremap <leader>I :VerilogFollowPort<CR>
+""nnoremap <leader>u :VerilogGotoInstanceStart<CR>
+
 ""supertab
-"let g:SuperTabDefaultCompletionType = 'context'
-let g:SuperTabRetainCompletionType = 2
-let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
+let g:SuperTabDefaultCompletionType = 'context'
+""let g:SuperTabRetainCompletionType = 2
+""let g:SuperTabDefaultCompletionType = "<C-X><C-O>" 
 ""tagbar
 let g:tagbar_ctags_bin='~/bin/exctags'
 let g:tagbar_autofocus = 1
@@ -70,7 +72,41 @@ map <Leader><leader>. <Plug>(easymotion-repeat)
 """"""""""""""""""""""""""<localrc>""""""""""""""""""""""""""""
 let g:localrc_filename = '.uvmrc'
 let g:uvm_email = "jude.zhang@analog.com"
-"
+
+""""""""""""""""""""""""""<multiple-cursors>""""""""""""""""""""""""""""
+let g:multi_cursor_use_default_mapping=0
+
+" Default mapping
+let g:multi_cursor_start_word_key      = '<C-n>'
+let g:multi_cursor_select_all_word_key = '<A-n>'
+let g:multi_cursor_start_key           = 'g<C-n>'
+let g:multi_cursor_select_all_key      = 'g<A-n>'
+let g:multi_cursor_next_key            = '<C-n>'
+let g:multi_cursor_prev_key            = '<C-p>'
+let g:multi_cursor_skip_key            = '<C-x>'
+let g:multi_cursor_quit_key            = '<Esc>'
+
+""""""""""""""""""""""""""<Tabularize>""""""""""""""""""""""""""""
+if exists(":Tabularize")
+    echo "Successful in adding the copyright."
+    nmap <Leader>t= :Tabularize /=<CR>
+    vmap <Leader>t= :Tabularize /=<CR>
+    nmap <Leader>t: :Tabularize /:\zs<CR>
+    vmap <Leader>t: :Tabularize /:\zs<CR>
+endif
+
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+
+function! s:align()
+    let p = '^\s*|\s.*\s|\s*$'
+    if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+        let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+        let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+        Tabularize/|/l1
+        normal! 0
+        call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+    endif
+endfunction
 """"""""""""""""""""""""""<matchit>""""""""""""""""""""""""""""
 let g:hl_matchit_enable_on_vim_startup = 1
 let b:match_words='\<begin\>:\<end\>,'
@@ -96,19 +132,20 @@ ab /b ///<
 
 """"""""""""""""""ctags list"""""""""""""""""""""""""""
 let $project_name = $PRJ_NAME
-set tags+=~/tags/uvm_tags
+set tags+=~/ctags/uvm_tags
+set tags+=~/ctags/sc_tags
+set tags+=~/ctags/ceva_tags
+set tags+=~/ctags/oem_tags
+set tags+=~/ctags/ctest_tags
+set tags+=~/ctags/cevaDriver_tags
+set tags+=~/ctags/vip_tags
+set tags+=./tags
 if $project_name =~ 'll'
 endif
-""set tags+=~/tags/gmssl_tags
-set tags+=~/tags/poc_tags
-set tags+=~/tags/yamm_tags
-set tags+=~/tags/django_tags
-set tags+=~/tags/cortex-m3_tags
-set tags+=~/tags/nvdla_sw_tags
 
 """"""""""""""""""Auto complete"""""""""""""""""""""""""""
 set complete=.,w,i,b,u,d,k
-set dictionary=~/.vim/words/uvm_kwords,/usr/share/dict/words,$VCS_HOME/gui/tb/qdbg_sv.ini
+set dictionary=~/.vim/words/uvm_kwords,$VCS_HOME/gui/tb/qdbg_sv.ini,/usr/share/dict/words
 
 """"""""""""""""""""""<gui_font_setting>""""""""""""""""""
 set linespace=1
@@ -174,12 +211,12 @@ set shiftwidth=4
 set expandtab
 
 autocmd Filetype make  set noexpandtab 
-autocmd Filetype c,cpp set shiftwidth=2 tabstop=2 expandtab
+""autocmd Filetype c,cpp set shiftwidth=2 tabstop=2 expandtab
 autocmd Filetype verilog setlocal tabstop=3 softtabstop=3 shiftwidth=3 expandtab 
 autocmd Filetype systemverilog setlocal tabstop=3 softtabstop=3 shiftwidth=3 expandtab 
 "autocmd Filetype python setlocal tabstop=3 softtabstop=3 shiftwidth=3 expandtab 
 autocmd FileType c,cpp :set cindent
-""set smartindent 
+set smartindent 
 set autoindent 
 "set cindent shiftwidth=4
 "
@@ -190,7 +227,7 @@ cnoremap make   :source $SYNTAX/make.vim
 ""for python.vim switch use
 let OPTION_NAME =1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
+autocmd BufRead,BufNewFile *.rdl set filetype=systemrdl 
 """"""""""""""""""""""<some useful setting>""""""""""""""""""""
 
 "open file type detecting
@@ -384,38 +421,53 @@ function AddTitle()
         call append(11,"// $Revision: $")
         call append(12,"// $Id: $")
         call append(13,"// ***********************************************************************")    
-        let s:botline = line("$")
-        call append(s:botline,"// ***********************************************************************")
-        let s:botline1 = s:botline+1
-        call append(s:botline1,"// $Log: $")
-        let s:botline2 = s:botline+2
+        ""let s:botline = line("$")
+        ""call append(s:botline,"// ***********************************************************************")
+        ""let s:botline1 = s:botline+1
+        ""call append(s:botline1,"// $Log: $")
+        ""let s:botline2 = s:botline+2
     else
         call append(0,"// ***********************************************************************")
-        call append(1,"// *****************                                                       ")
-        call append(2,"// ***** ***********                                                       ")
-        call append(3,"// *****   *********       Copyright (c) ".strftime("%Y"). " Analog Devices")
-        call append(4,"// *****     *******               (BJ EMP group)                          ")
-        call append(5,"// *****       *****         Analog Devices Confidential                   ")
-        call append(6,"// *****     *******             All rights reserved                       ")
-        call append(7,"// *****   *********                                                       ")
-        call append(8,"// ***** ***********                                                       ")
-        call append(9,"// *****************                                                       ")
-        call append(10,"// ***********************************************************************")
-        call append(11,"// PROJECT        : ".$project_name)
-        call append(12,"// FILENAME       : ".expand("%:t"))
-        call append(13,"// Author         : ".toupper($USER)." [". g:uvm_email ."]")
-        call append(14,"// LAST MODIFIED  : ".strftime("%Y-%m-%d %H:%M"))
-        call append(15,"// ***********************************************************************")
-        call append(16,"// DESCRIPTION    :")    
-        call append(17,"// ***********************************************************************")    
-        call append(18,"// $Revision: $")
-        call append(19,"// $Id: $")
-        call append(20,"// ***********************************************************************")    
-        let s:botline = line("$")
-        call append(s:botline,"// ***********************************************************************")
-        let s:botline1 = s:botline+1
-        call append(s:botline1,"// $Log: $")
-        let s:botline2 = s:botline+2
+        call append(1,"//                 Copyright (c) 2019.                                    ")
+        call append(2,"//             PICOCOMTECH®  ALL RIGHTS RESERVED                          ")
+        call append(3,"// ***********************************************************************")
+        call append(4,"// PROJECT        : ".$project_name)
+        call append(5,"// FILENAME       : ".expand("%:t"))
+        call append(6,"// Author         : ".toupper($USER))
+        call append(7,"// LAST MODIFIED  : ".strftime("%Y-%m-%d %H:%M"))
+        call append(8,"// ***********************************************************************")
+        call append(9,"// DESCRIPTION    :")    
+        call append(10,"// ***********************************************************************")    
+        call append(11,"// $Revision: $")
+        call append(12,"// $Id: $")
+        call append(13,"// ***********************************************************************")  
+
+        ""call append(0,"// ***********************************************************************")
+        ""call append(1,"// *****************                                                       ")
+        ""call append(2,"// ***** ***********                                                       ")
+        ""call append(3,"// *****   *********       Copyright (c) ".strftime("%Y"). " Analog Devices")
+        ""call append(4,"// *****     *******               (BJ EMP group)                          ")
+        ""call append(5,"// *****       *****         Analog Devices Confidential                   ")
+        ""call append(6,"// *****     *******             All rights reserved                       ")
+        ""call append(7,"// *****   *********                                                       ")
+        ""call append(8,"// ***** ***********                                                       ")
+        ""call append(9,"// *****************                                                       ")
+        ""call append(10,"// ***********************************************************************")
+        ""call append(11,"// PROJECT        : ".$project_name)
+        ""call append(12,"// FILENAME       : ".expand("%:t"))
+        ""call append(13,"// Author         : ".toupper($USER)." [". g:uvm_email ."]")
+        ""call append(14,"// LAST MODIFIED  : ".strftime("%Y-%m-%d %H:%M"))
+        ""call append(15,"// ***********************************************************************")
+        ""call append(16,"// DESCRIPTION    :")    
+        ""call append(17,"// ***********************************************************************")    
+        ""call append(18,"// $Revision: $")
+        ""call append(19,"// $Id: $")
+        ""call append(20,"// ***********************************************************************")    
+        ""let s:botline = line("$")
+        ""call append(s:botline,"// ***********************************************************************")
+        ""let s:botline1 = s:botline+1
+        ""call append(s:botline1,"// $Log: $")
+        ""let s:botline2 = s:botline+2
         ""call append(s:botline2,"// $Revision $")
     endif
     echohl WarningMsg | echo "Successful in adding the copyright." | echohl None
