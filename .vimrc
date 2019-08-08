@@ -10,9 +10,13 @@ execute pathogen#infect()
 ""set rtp+=~/.fzf 
 """"""""""""""""""""<color scheme setting>""""""""""""""""""
 ""vim color scheme setting 
-set background=dark
-colorscheme desert
-"colorscheme solarized
+if has("gui_running")
+    set background=dark
+    colorscheme desert    
+    "colorscheme solarized
+else
+    colorscheme molokai
+endif
 
 """"""""""""""""""some useful plugins setting"""""""""""""""
 """"""""""""""""""""""""<tag_list>""""""""""""""""""""""""""
