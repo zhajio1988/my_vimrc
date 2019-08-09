@@ -127,3 +127,26 @@ complete -o nospace -F _gvComplete gv
 
 export DESIGNWARE_HOME=/huaihe/app/c7/synopsys/designware/vip
 export PATH=$DESIGNWARE_HOME/bin:$PATH:/huaihe/app/c7/emacs/bin
+
+#change gnome-terminal tab name
+function tab() {
+  if [[ -z "$ORIG" ]]; then
+    ORIG=$PS1
+  fi
+  TITLE="\[\e]2;$*\a\]"
+  PS1=${ORIG}${TITLE}
+}
+
+#safe rm
+mkdir -p /tmp/jiongz                                   
+alias rm=trash                                      
+alias r=trash
+alias rl='ls /tmp/jiongz'
+alias ur=undelfile
+undelfile(){
+    mv -i /tmp/jiongz/$@ ./
+}
+trash(){
+    mv $@ /tmp/jiongz/
+}
+
