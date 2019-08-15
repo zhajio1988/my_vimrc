@@ -61,6 +61,43 @@ let g:SuperTabDefaultCompletionType = 'context'
 let g:tagbar_ctags_bin='~/bin/exctags'
 let g:tagbar_autofocus = 1
 nmap <silent> <F4> :TagbarToggle<CR>
+let g:tagbar_type_systemverilog = {
+        \ 'ctagstype'   : 'SystemVerilog',
+        \ 'kinds'       : [
+            \ 'b:blocks:1:1',
+            \ 'c:constants:1:0',
+            \ 'e:events:1:0',
+            \ 'f:functions:1:1',
+            \ 'm:modules:0:1',
+            \ 'n:nets:1:0',
+            \ 'p:ports:1:0',
+            \ 'r:registers:1:0',
+            \ 't:tasks:1:1',
+            \ 'A:assertions:1:1',
+            \ 'C:classes:0:1',
+            \ 'V:covergroups:0:1',
+            \ 'I:interfaces:0:1',
+            \ 'M:modport:0:1',
+            \ 'K:packages:0:1',
+            \ 'P:programs:0:1',
+            \ 'R:properties:0:1',
+            \ 'T:typedefs:0:1'
+    \ ],
+        \ 'sro'         : '.',
+        \ 'kind2scope'  : {
+            \ 'm' : 'module',
+            \ 'b' : 'block',
+            \ 't' : 'task',
+            \ 'f' : 'function',
+            \ 'C' : 'class',
+            \ 'V' : 'covergroup',
+            \ 'I' : 'interface',
+            \ 'K' : 'package',
+            \ 'P' : 'program',
+            \ 'R' : 'property'
+        \ },
+    \ }
+
 """"""""""""""""""""""""""<minibuf>""""""""""""""""""""""""""""
 let g:miniBufExplMapCTabSwitchBufs=1
 let g:miniBufExplMapWindowsNavVim=1
