@@ -28,7 +28,7 @@ else
 endif
 
 " List of all types
-let s:type_list = ["driver","monitor","agent","sequence","sequencer","vir_seqr","config"]
+let s:type_list = ["driver","monitor","agent","sequence","sequencer","vir_seqr","config","interface"]
 
 " normalize the path
 " replace the windows path sep \ with /
@@ -151,7 +151,7 @@ function! UVMEnv(name)
     call <SID>TExpand("NAME", a:name)
     call <SID>TExpand("UPPERNAME", a:uppername)
     call <SID>TPutCursor()
-    call s:UVMAddTail()
+    ""call s:UVMAddTail()
 endfunction
 
 function! UVMTest(name)
@@ -172,7 +172,7 @@ function! UVMTest(name)
     call <SID>TExpand("PARENT", a:parent_name)
     call <SID>TExpand("UPPERNAME", a:uppername)
     call <SID>TPutCursor()
-    call s:UVMAddTail()
+    "call s:UVMAddTail()
 endfunction
 
 function! UVMAgent(name)
@@ -186,7 +186,7 @@ function! UVMAgent(name)
     call <SID>TExpand("UPPERNAME", a:uppername)
     call <SID>TExpand("TRANSACTION", g:transaction_name)
     call <SID>TPutCursor()
-    call s:UVMAddTail()
+    "call s:UVMAddTail()
 endfunction
 
 function! UVMDriver(name)
@@ -200,7 +200,7 @@ function! UVMDriver(name)
     call <SID>TExpand("UPPERNAME", a:uppername)
     call <SID>TExpand("TRANSACTION", g:transaction_name)
     call <SID>TPutCursor()
-    call s:UVMAddTail()
+    ""call s:UVMAddTail()
 endfunction
 
 function! UVMMon(name)
@@ -214,7 +214,7 @@ function! UVMMon(name)
     call <SID>TExpand("UPPERNAME", a:uppername)
     call <SID>TExpand("TRANSACTION", g:transaction_name)    
     call <SID>TPutCursor()
-    call s:UVMAddTail()
+    ""call s:UVMAddTail()
 endfunction
 
 function! UVMSeq(name)
@@ -228,7 +228,7 @@ function! UVMSeq(name)
     call <SID>TExpand("UPPERNAME", a:uppername)
     call <SID>TExpand("TRANSACTION", g:transaction_name)
     call <SID>TPutCursor()
-    call s:UVMAddTail()
+    "call s:UVMAddTail()
 endfunction
 
 function! UVMVirSeqr(name)
@@ -241,7 +241,7 @@ function! UVMVirSeqr(name)
     call <SID>TExpand("NAME", a:name)
     call <SID>TExpand("UPPERNAME", a:uppername)
     call <SID>TPutCursor()
-    call s:UVMAddTail()
+    ""call s:UVMAddTail()
 endfunction
 
 function! UVMSeqr(name)
@@ -255,7 +255,7 @@ function! UVMSeqr(name)
     call <SID>TExpand("UPPERNAME", a:uppername)
     call <SID>TExpand("TRANSACTION", g:transaction_name)    
     call <SID>TPutCursor()
-    call s:UVMAddTail()
+    ""call s:UVMAddTail()
 endfunction
 
 function! UVMTr(name)
@@ -268,7 +268,7 @@ function! UVMTr(name)
     call <SID>TExpand("NAME", a:name)
     call <SID>TExpand("UPPERNAME", a:uppername)
     call <SID>TPutCursor()
-    call s:UVMAddTail()
+    ""call s:UVMAddTail()
 endfunction
 
 function! UVMTop(name)
@@ -281,7 +281,7 @@ function! UVMTop(name)
     call <SID>TExpand("NAME", a:name)
     call <SID>TExpand("UPPERNAME", a:uppername)
     call <SID>TPutCursor()
-    call s:UVMAddTail()
+    ""call s:UVMAddTail()
 endfunction
 
 function! UVMConfig(name)
@@ -294,7 +294,21 @@ function! UVMConfig(name)
     call <SID>TExpand("NAME", a:name)
     call <SID>TExpand("UPPERNAME", a:uppername)
     call <SID>TPutCursor()
-    call s:UVMAddTail()
+    "call s:UVMAddTail()
+endfunction
+
+function! UVMInterface(name)
+    let a:template_filename = "uvm_interface.sv"
+    let a:template = s:default_template_dir . "/" . a:template_filename
+    let a:uppername = toupper(a:name)
+    let a:lowername = tolower(a:name)
+
+    " call s:UVMAddHeader()
+    call <SID>TLoadCmd(a:template)
+    call <SID>TExpand("NAME", a:name)
+    call <SID>TExpand("UPPERNAME", a:uppername)
+    call <SID>TExpand("LOWERNAME", a:lowername)
+    call <SID>TPutCursor()
 endfunction
 
 " According to the args, call different methods
@@ -308,6 +322,8 @@ function UVMGen(type, name)
         call UVMAgent(a:name)
     elseif (a:type== "config")
         call UVMConfig(a:name)
+    elseif (a:type== "interface")
+        call UVMInterface(a:name)
     elseif (a:type== "driver") || (a:type == "drv")
         call UVMDriver(a:name)
     elseif (a:type== "monitor") || (a:type == "mon")
@@ -327,6 +343,7 @@ function UVMGen(type, name)
         echo " sequencer / seqr - Generate UVM Sequencer"        
         echo " vir_seqr         - Generate UVM Vir Sequencer"        
         echo " config           - Generate UVM Config"
+        echo " interface        - Generate UVM Interface"        
         echo " env              - Generate UVM Env"
         echo " test             - Generate UVM Test"
         echo " top              - Generate UVM Top"
@@ -351,6 +368,7 @@ command -nargs=1 UVMTr call UVMTr("<args>")
 command -nargs=1 UVMItem call UVMTr("<args>")
 command -nargs=1 UVMTop call UVMTop("<args>")
 command -nargs=1 UVMConfig call UVMConfig("<args>")
+command -nargs=1 UVMInterface call UVMInterface("<args>")
 command -nargs=+ -complete=customlist,ReturnTypesList UVMGen call UVMGen(<f-args>)
 " }}}
 

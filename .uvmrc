@@ -1,1 +1,1 @@
-let g:transaction_name = "uvm_gen_test"
+let g:transaction_name = "dma_trans"

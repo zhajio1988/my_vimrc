@@ -86,7 +86,7 @@ function VerilogEmacsAutoFoldLevel(l)
 endfunction
 
 function! Emacsauto()
-    call s:Add()<CR>
+    call s:Add()
 endfunction
 
 command -nargs=0 Emacsauto call Emacsauto()

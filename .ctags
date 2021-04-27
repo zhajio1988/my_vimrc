@@ -5,7 +5,7 @@
 --exclude=*.log
 
 --langdef=SystemVerilog
---langmap=SystemVerilog:.sv.svh.svi
+--langmap=SystemVerilog:.sv.svh.svi.svp
 
 --regex-SystemVerilog=/^\s*(\b(static|local|virtual|protected)\b)*\s*\bclass\b\s*(\b\w+\b)/\3/c,class/
 --regex-SystemVerilog=/^\s*(\b(static|local|virtual|protected)\b)*\s*\btask\b\s*(\b(static|automatic)\b)?\s*(\w+::)?\s*(\b\w+\b)/\6/t,task/

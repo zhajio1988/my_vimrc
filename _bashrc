@@ -1,12 +1,57 @@
-# .bashrc
-
 # Source global definitions
 if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
+        . /etc/bashrc
 fi
 
-# Uncomment the following line if you don't like systemctl's auto-paging feature:
-# export SYSTEMD_PAGER=
-
 # User specific aliases and functions
-. ~/.bashrc.user
+#########################################################
+# 2020.5.10 
+########################################################
+# picocom ic group
+########################################################
+
+#export PS1="\[\033[40;33;1m\][\!]\`if [[ \$? =   "0" ]]; then echo "\\[\\033[32m\\]"; else echo   "\\[\\033[31m\\]"; fi\`[\u@\h: \`if [[ `pwd|wc -c|tr -d "   "` > 18 ]]; then echo "\\W"; else echo "\\w";   fi\`]\\$\[\033[0m\] "; echo -ne "\033]0;`hostname -s`:`pwd`\007";
+
+
+source /opt/picocom/tools/toolconfigs/toolconfig.sh
+
+if [ -f ~/own.bashrc ]; then
+	source ~/own.bashrc	#Define your own bash settings file and named the file own.bashrc
+fi
+
+module use /cad/modulefiles
+
+#=============basic==============
+
+alias rm='rm -i'
+alias mv='mv -i'
+alias cp='cp -i'
+alias sou='source ~/.bashrc'
+
+alias his='history'
+alias grep='grep -n --color=auto'
+alias du1="du -h --max-depth=1"
+alias du2="du -h --max-depth=2"
+
+alias vi='gvim'
+alias v='gvim'
+alias g='gvim'
+alias l='ll -h'
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+
+#=============function===========
+
+function dun() {
+	du -h --max-depth=$1;
+}
+
+#=============paths==============
+
+alias user='cd /ic/user/`whoami`/'
+alias app='cd /ic/app/'
+alias work='cd /ic/proj/`whoami`'
+alias temp='cd /ic/temp/`whoami`'

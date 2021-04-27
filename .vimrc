@@ -26,21 +26,21 @@ endif
 ""nmap <silent> <F4> :TlistToggle<CR>
 
 " OmniCppComplete
-filetype plugin on
-set completeopt=menuone,menu
-let OmniCpp_MayCompleteDot=1 
-let OmniCpp_MayCompleteArrow=1 
-let OmniCpp_MayCompleteScope=1
-let OmniCpp_NamespaceSearch=1
-let OmniCpp_GlobalScopeSearch=1
-let OmniCpp_DefaultNamespaces=["std"]
-let OmniCpp_ShowPrototypeInAbbr=1 
-let OmniCpp_SelectFirstItem = 2
-" automatically open and close the popup menu / preview window
-au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-
-highlight Pmenu    guibg=darkgrey  guifg=black
-highlight PmenuSel guibg=lightgrey guifg=black
+""filetype plugin on
+""set completeopt=menuone,menu
+""let OmniCpp_MayCompleteDot=1 
+""let OmniCpp_MayCompleteArrow=1 
+""let OmniCpp_MayCompleteScope=1
+""let OmniCpp_NamespaceSearch=1
+""let OmniCpp_GlobalScopeSearch=1
+""let OmniCpp_DefaultNamespaces=["std"]
+""let OmniCpp_ShowPrototypeInAbbr=1 
+""let OmniCpp_SelectFirstItem = 2
+""" automatically open and close the popup menu / preview window
+""au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+""
+""highlight Pmenu    guibg=darkgrey  guifg=black
+""highlight PmenuSel guibg=lightgrey guifg=black
 
 set cscopetag
 
@@ -52,7 +52,7 @@ nmap wm :WMToggle<cr>
 ""nnoremap <leader>i :VerilogFollowInstance<CR>
 ""nnoremap <leader>I :VerilogFollowPort<CR>
 ""nnoremap <leader>u :VerilogGotoInstanceStart<CR>
-
+"
 ""supertab
 let g:SuperTabDefaultCompletionType = 'context'
 ""let g:SuperTabRetainCompletionType = 2
@@ -61,6 +61,42 @@ let g:SuperTabDefaultCompletionType = 'context'
 let g:tagbar_ctags_bin='~/bin/exctags'
 let g:tagbar_autofocus = 1
 nmap <silent> <F4> :TagbarToggle<CR>
+let g:tagbar_type_systemverilog = {
+        \ 'ctagstype'   : 'SystemVerilog',
+        \ 'kinds'       : [
+            \ 'b:blocks:1:1',
+            \ 'c:constants:1:0',
+            \ 'e:events:1:0',
+            \ 'f:functions:1:1',
+            \ 'm:modules:0:1',
+            \ 'n:nets:1:0',
+            \ 'p:ports:1:0',
+            \ 'r:registers:1:0',
+            \ 't:tasks:1:1',
+            \ 'A:assertions:1:1',
+            \ 'C:classes:0:1',
+            \ 'V:covergroups:0:1',
+            \ 'I:interfaces:0:1',
+            \ 'M:modport:0:1',
+            \ 'K:packages:0:1',
+            \ 'P:programs:0:1',
+            \ 'R:properties:0:1',
+            \ 'T:typedefs:0:1'
+    \ ],
+        \ 'sro'         : '.',
+        \ 'kind2scope'  : {
+            \ 'm' : 'module',
+            \ 'b' : 'block',
+            \ 't' : 'task',
+            \ 'f' : 'function',
+            \ 'C' : 'class',
+            \ 'V' : 'covergroup',
+            \ 'I' : 'interface',
+            \ 'K' : 'package',
+            \ 'P' : 'program',
+            \ 'R' : 'property'
+        \ },
+    \ }
 """"""""""""""""""""""""""<minibuf>""""""""""""""""""""""""""""
 let g:miniBufExplMapCTabSwitchBufs=1
 let g:miniBufExplMapWindowsNavVim=1
@@ -78,7 +114,7 @@ let g:localrc_filename = '.uvmrc'
 let g:uvm_email = "jude.zhang@analog.com"
 
 """"""""""""""""""""""""""<multiple-cursors>""""""""""""""""""""""""""""
-let g:multi_cursor_use_default_mapping=0
+"let g:multi_cursor_use_default_mapping=0
 
 " Default mapping
 ""let g:multi_cursor_start_word_key      = '<C-n>'
@@ -88,11 +124,10 @@ let g:multi_cursor_use_default_mapping=0
 ""let g:multi_cursor_next_key            = '<C-n>'
 ""let g:multi_cursor_prev_key            = '<C-p>'
 ""let g:multi_cursor_skip_key            = '<C-x>'
-""let g:multi_cursor_quit_key            = '<Esc>'
+"let g:multi_cursor_quit_key            = '<Esc>'
 
 """"""""""""""""""""""""""<Tabularize>""""""""""""""""""""""""""""
 if exists(":Tabularize")
-    echo "Successful in adding the copyright."
     nmap <Leader>t= :Tabularize /=<CR>
     vmap <Leader>t= :Tabularize /=<CR>
     nmap <Leader>t: :Tabularize /:\zs<CR>
@@ -123,6 +158,7 @@ let b:match_words='\<begin\>:\<end\>,'
             \.'\<case\>:\<endcase\>,'
             \.'\<module\>:\<endmodule\>,'
             \.'\<block\>:\<endblock\>,'
+            \.'\<covergroup\>:\<endgroup\>,'
             \.'\<if\>:\<endif\>,'
 
 """"""""""""""""""""abbreviations""""""""""""""""""""""""""""""""""
@@ -137,12 +173,13 @@ ab /b ///<
 """"""""""""""""""ctags list"""""""""""""""""""""""""""
 let $project_name = $PRJ_NAME
 set tags+=~/ctags/uvm_tags
-set tags+=~/ctags/sc_tags
-set tags+=~/ctags/ceva_tags
-set tags+=~/ctags/oem_tags
-set tags+=~/ctags/ctest_tags
-set tags+=~/ctags/cevaDriver_tags
+set tags+=~/ctags/jesd_tags
+set tags+=~/ctags/soc_vv_tags
 set tags+=~/ctags/vip_tags
+set tags+=~/ctags/hwa_tags
+set tags+=~/ctags/soc_fw_tags
+set tags+=~/ctags/andes_tags
+set tags+=~/ctags/hwa_refactor_tags
 set tags+=./tags
 if $project_name =~ 'll'
 endif
@@ -168,7 +205,7 @@ if has("gui_running")
 endif
 
 """""""""""""""""""""""< menu and item >"""""""""""""""""""""
-set guioptions-=m
+set guioptions+=m
 set guioptions-=T
 set guioptions+=b
 
@@ -204,9 +241,11 @@ set fileencodings=utf-8,gbk,big5,euc-jp,gb2312
 set foldcolumn=2
 highlight Folded guibg=grey guifg=blue
 highlight FoldColumn guibg=black guifg=white
-set foldmethod=syntax
-let g:fastfold_fold_command_suffixes =  ['x','X','a','A']
-set nofoldenable
+set foldmethod=marker 
+""au BufWinLeave * silent mkview
+""au BufWinEnter * silent loadview
+
+""set nofoldenable
 """""""""""""""""""""""""<set tab space>""""""""""""""""""""""""
 ""tab=space setting for different editors
 set tabstop=4
@@ -225,9 +264,7 @@ set autoindent
 "set cindent shiftwidth=4
 "
 """""""""""""""""""""""<command_line mapping>""""""""""""""""""""""""""
-cnoremap match  :source ~/.vim/plugin/matchit.vim 
 cnoremap sv     :source ~/.vim/syntax/systemverilog.vim
-cnoremap make   :source $SYNTAX/make.vim 
 ""for python.vim switch use
 let OPTION_NAME =1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -262,7 +299,7 @@ nmap <c-q>  :q <CR>
 "save file
 nmap <c-s>  :w <CR>
 "refresh file
-nmap <c-e>  :e <CR>
+nmap <c-e>  :Explore <CR>
 
 "add doxygen c++ style comment
 nmap <c-t>  :Dox <CR> 
@@ -412,7 +449,7 @@ function AddTitle()
     let s:extension = expand("%:e") 
     if s:extension =~ 'cpp' || s:extension =~ 'h' ||  s:extension =~ 'c'
         call append(0,"// ***********************************************************************")
-        call append(1,"//                 Copyright (c) 2019.                                    ")
+        call append(1,"//                 Copyright (c) 2021.                                    ")
         call append(2,"//             PICOCOMTECH®  ALL RIGHTS RESERVED                          ")
         call append(3,"// ***********************************************************************")
         call append(4,"// PROJECT        : ".$project_name)
@@ -432,7 +469,7 @@ function AddTitle()
         ""let s:botline2 = s:botline+2
     else
         call append(0,"// ***********************************************************************")
-        call append(1,"//                 Copyright (c) 2019.                                    ")
+        call append(1,"//                 Copyright (c) 2021.                                    ")
         call append(2,"//             PICOCOMTECH®  ALL RIGHTS RESERVED                          ")
         call append(3,"// ***********************************************************************")
         call append(4,"// PROJECT        : ".$project_name)
