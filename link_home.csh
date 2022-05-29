@@ -5,7 +5,7 @@ ln -sf `pwd`/.emacs.d     ~/.emacs.d
 ln -sf `pwd`/.ctags.d     ~/.ctags.d
 ln -sf `pwd`/.vimrc       ~/.vimrc
 ln -sf `pwd`/.uvmrc       ~/.uvmrc
-ln -sf `pwd`/.bashrc.user ~/.bashrc.user
+ln -sf `pwd`/.bashrc.user ~/own.bashrc
 ln -sf `pwd`/.gitconfig   ~/.gitconfig
 ln -sf `pwd`/_bashrc      ~/.bashrc
 ln -sf `pwd`/.cshrc.user  ~/.cshrc.user

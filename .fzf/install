@@ -2,12 +2,10 @@
 
 set -u
 
-version=0.18.0
+version=0.30.0
 auto_completion=
 key_bindings=
 update_config=2
-binary_arch=
-allow_legacy=
 shells="bash zsh fish"
 prefix='~/.fzf'
 prefix_expand=~/.fzf
@@ -29,9 +27,6 @@ usage: $0 [OPTIONS]
     --no-bash            Do not set up bash configuration
     --no-zsh             Do not set up zsh configuration
     --no-fish            Do not set up fish configuration
-
-    --32                 Download 32-bit binary
-    --64                 Download 64-bit binary
 EOF
 }
 
@@ -45,7 +40,6 @@ for opt in "$@"; do
       auto_completion=1
       key_bindings=1
       update_config=1
-      allow_legacy=1
       ;;
     --xdg)
       prefix='"${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf'
@@ -58,8 +52,6 @@ for opt in "$@"; do
     --no-completion)   auto_completion=0 ;;
     --update-rc)       update_config=1   ;;
     --no-update-rc)    update_config=0   ;;
-    --32)              binary_arch=386   ;;
-    --64)              binary_arch=amd64 ;;
     --bin)             ;;
     --no-bash)         shells=${shells/bash/} ;;
     --no-zsh)          shells=${shells/zsh/} ;;
@@ -122,7 +114,7 @@ link_fzf_in_path() {
 
 try_curl() {
   command -v curl > /dev/null &&
-  if [[ $1 =~ tgz$ ]]; then
+  if [[ $1 =~ tar.gz$ ]]; then
     curl -fL $1 | tar -xzf -
   else
     local temp=${TMPDIR:-/tmp}/fzf.zip
@@ -132,7 +124,7 @@ try_curl() {
 
 try_wget() {
   command -v wget > /dev/null &&
-  if [[ $1 =~ tgz$ ]]; then
+  if [[ $1 =~ tar.gz$ ]]; then
     wget -O - $1 | tar -xzf -
   else
     local temp=${TMPDIR:-/tmp}/fzf.zip
@@ -142,13 +134,11 @@ try_wget() {
 
 download() {
   echo "Downloading bin/fzf ..."
-  if [[ ! "$version" =~ alpha ]]; then
-    if [ -x "$fzf_base"/bin/fzf ]; then
-      echo "  - Already exists"
-      check_binary && return
-    fi
-    link_fzf_in_path && return
+  if [ -x "$fzf_base"/bin/fzf ]; then
+    echo "  - Already exists"
+    check_binary && return
   fi
+  link_fzf_in_path && return
   mkdir -p "$fzf_base"/bin && cd "$fzf_base"/bin
   if [ $? -ne 0 ]; then
     binary_error="Failed to create bin directory"
@@ -156,9 +146,7 @@ download() {
   fi
 
   local url
-  [[ "$version" =~ alpha ]] &&
-    url=https://github.com/junegunn/fzf-bin/releases/download/alpha/${1} ||
-    url=https://github.com/junegunn/fzf-bin/releases/download/$version/${1}
+  url=https://github.com/junegunn/fzf/releases/download/$version/${1}
   set -o pipefail
   if ! (try_curl $url || try_wget $url); then
     set +o pipefail
@@ -180,25 +168,21 @@ archi=$(uname -sm)
 binary_available=1
 binary_error=""
 case "$archi" in
-  Darwin\ *64)   download fzf-$version-darwin_${binary_arch:-amd64}.tgz  ;;
-  Darwin\ *86)   download fzf-$version-darwin_${binary_arch:-386}.tgz    ;;
-  Linux\ armv5*) download fzf-$version-linux_${binary_arch:-arm5}.tgz    ;;
-  Linux\ armv6*) download fzf-$version-linux_${binary_arch:-arm6}.tgz    ;;
-  Linux\ armv7*) download fzf-$version-linux_${binary_arch:-arm7}.tgz    ;;
-  Linux\ armv8*) download fzf-$version-linux_${binary_arch:-arm8}.tgz    ;;
-  Linux\ aarch64*) download fzf-$version-linux_${binary_arch:-arm8}.tgz  ;;
-  Linux\ *64)    download fzf-$version-linux_${binary_arch:-amd64}.tgz   ;;
-  Linux\ *86)    download fzf-$version-linux_${binary_arch:-386}.tgz     ;;
-  FreeBSD\ *64)  download fzf-$version-freebsd_${binary_arch:-amd64}.tgz ;;
-  FreeBSD\ *86)  download fzf-$version-freebsd_${binary_arch:-386}.tgz   ;;
-  OpenBSD\ *64)  download fzf-$version-openbsd_${binary_arch:-amd64}.tgz ;;
-  OpenBSD\ *86)  download fzf-$version-openbsd_${binary_arch:-386}.tgz   ;;
-  CYGWIN*\ *64)  download fzf-$version-windows_${binary_arch:-amd64}.zip ;;
-  MINGW*\ *86)   download fzf-$version-windows_${binary_arch:-386}.zip   ;;
-  MINGW*\ *64)   download fzf-$version-windows_${binary_arch:-amd64}.zip ;;
-  MSYS*\ *86)    download fzf-$version-windows_${binary_arch:-386}.zip   ;;
-  MSYS*\ *64)    download fzf-$version-windows_${binary_arch:-amd64}.zip ;;
-  *)             binary_available=0 binary_error=1 ;;
+  Darwin\ arm64)   download fzf-$version-darwin_arm64.zip     ;;
+  Darwin\ x86_64)  download fzf-$version-darwin_amd64.zip     ;;
+  Linux\ armv5*)   download fzf-$version-linux_armv5.tar.gz   ;;
+  Linux\ armv6*)   download fzf-$version-linux_armv6.tar.gz   ;;
+  Linux\ armv7*)   download fzf-$version-linux_armv7.tar.gz   ;;
+  Linux\ armv8*)   download fzf-$version-linux_arm64.tar.gz   ;;
+  Linux\ aarch64*) download fzf-$version-linux_arm64.tar.gz   ;;
+  Linux\ *64)      download fzf-$version-linux_amd64.tar.gz   ;;
+  FreeBSD\ *64)    download fzf-$version-freebsd_amd64.tar.gz ;;
+  OpenBSD\ *64)    download fzf-$version-openbsd_amd64.tar.gz ;;
+  CYGWIN*\ *64)    download fzf-$version-windows_amd64.zip    ;;
+  MINGW*\ *64)     download fzf-$version-windows_amd64.zip    ;;
+  MSYS*\ *64)      download fzf-$version-windows_amd64.zip    ;;
+  Windows*\ *64)   download fzf-$version-windows_amd64.zip    ;;
+  *)               binary_available=0 binary_error=1 ;;
 esac
 
 cd "$fzf_base"
@@ -214,7 +198,7 @@ if [ -n "$binary_error" ]; then
       export GOPATH="${TMPDIR:-/tmp}/fzf-gopath"
       mkdir -p "$GOPATH"
     fi
-    if go get -u github.com/junegunn/fzf; then
+    if go get -ldflags "-s -w -X main.version=$version -X main.revision=go-get" github.com/junegunn/fzf; then
       echo "OK"
       cp "$GOPATH/bin/fzf" "$fzf_base/bin/"
     else
@@ -296,11 +280,6 @@ EOF
   [ $? -eq 0 ] && echo "OK" || echo "Failed"
 
   mkdir -p "${fish_dir}/functions"
-  if [ -e "${fish_dir}/functions/fzf.fish" ]; then
-    echo -n "Remove unnecessary ${fish_dir}/functions/fzf.fish ... "
-    rm -f "${fish_dir}/functions/fzf.fish" && echo "OK" || echo "Failed"
-  fi
-
   fish_binding="${fish_dir}/functions/fzf_key_bindings.fish"
   if [ $key_bindings -ne 0 ]; then
     echo -n "Symlink $fish_binding ... "
@@ -384,7 +363,11 @@ fi
 
 if [ $update_config -eq 1 ]; then
   echo 'Finished. Restart your shell or reload config file.'
-  [[ "$shells" =~ bash ]] && echo '   source ~/.bashrc  # bash'
+  if [[ "$shells" =~ bash ]]; then
+    echo -n '   source ~/.bashrc  # bash'
+    [[ "$archi" =~ Darwin ]] && echo -n '  (.bashrc should be loaded from .bash_profile)'
+    echo
+  fi
   [[ "$shells" =~ zsh ]]  && echo "   source ${ZDOTDIR:-~}/.zshrc   # zsh"
   [[ "$shells" =~ fish ]] && [ $key_bindings -eq 1 ] && echo '   fzf_key_bindings  # fish'
   echo

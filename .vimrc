@@ -7,7 +7,13 @@ let mapleader = "\\"
 execute pathogen#infect()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""runtimepath  fzf doesn't work
-""set rtp+=~/.fzf 
+set rtp+=~/.fzf 
+call plug#begin()
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+call plug#end()
+
+let g:fzf_launcher = 'gnome-terminal --hide-menubar --disable-factory -x bash -ic %s'
 """"""""""""""""""""<color scheme setting>""""""""""""""""""
 ""vim color scheme setting 
 if has("gui_running")
@@ -176,10 +182,15 @@ set tags+=~/ctags/uvm_tags
 set tags+=~/ctags/jesd_tags
 set tags+=~/ctags/soc_vv_tags
 set tags+=~/ctags/vip_tags
+set tags+=~/ctags/eth_tags
 set tags+=~/ctags/hwa_tags
 set tags+=~/ctags/soc_fw_tags
 set tags+=~/ctags/andes_tags
-set tags+=~/ctags/hwa_refactor_tags
+set tags+=~/ctags/fhi_tags
+set tags+=~/ctags/ot_tags
+set tags+=~/ctags/pal_tags
+set tags+=~/ctags/fw_tags
+set tags+=~/ctags/hwal_tags
 set tags+=./tags
 if $project_name =~ 'll'
 endif
@@ -187,7 +198,8 @@ endif
 """"""""""""""""""Auto complete"""""""""""""""""""""""""""
 set complete=.,w,i,b,u,d,k
 set dictionary=~/.vim/words/uvm_kwords,$VCS_HOME/gui/tb/qdbg_sv.ini,/usr/share/dict/words
-
+set isfname+={,}
+set isfname-=,
 """"""""""""""""""""""<gui_font_setting>""""""""""""""""""
 set linespace=1
 if has("gui_running")
@@ -238,10 +250,10 @@ set matchtime=5
 set fileencodings=utf-8,gbk,big5,euc-jp,gb2312
 
 """""""""fold set""""""""""""""""
+set foldmethod=marker
 set foldcolumn=2
 highlight Folded guibg=grey guifg=blue
 highlight FoldColumn guibg=black guifg=white
-set foldmethod=marker 
 ""au BufWinLeave * silent mkview
 ""au BufWinEnter * silent loadview
 
@@ -327,15 +339,15 @@ nmap <silent> <c-p> :bp <CR>
 ""nmap <Leader>di :!sosdis $file_name 
 
 """""""""""""""""""""auto_complete""""""""""""""""""""""""""""
-inoremap ( ()i
-inoremap ) =ClosePair(')')
-inoremap < <>i
-inoremap > =ClosePair('>')
-inoremap { {}i
-inoremap } =ClosePair('}')
-inoremap [ []i
-inoremap ] =ClosePair(']')
-inoremap " ""
+""inoremap ( ()i
+""inoremap ) =ClosePair(')')
+""inoremap < <>i
+""inoremap > =ClosePair('>')
+""inoremap { {}i
+""inoremap } =ClosePair('}')
+""inoremap [ []i
+""inoremap ] =ClosePair(']')
+""inoremap " ""
 ":inoremap ' ''
 function ClosePair(char)
 if getline('.')[col('.')-1]==a:char
@@ -444,24 +456,22 @@ au BufNewFile,BufRead *.v  setf verilog
 endfunction
 
 map <F6> :call TitleDet()<cr>'s
-
 function AddTitle()
     let s:extension = expand("%:e") 
     if s:extension =~ 'cpp' || s:extension =~ 'h' ||  s:extension =~ 'c'
         call append(0,"// ***********************************************************************")
-        call append(1,"//                 Copyright (c) 2021.                                    ")
-        call append(2,"//             PICOCOMTECH®  ALL RIGHTS RESERVED                          ")
-        call append(3,"// ***********************************************************************")
-        call append(4,"// PROJECT        : ".$project_name)
-        call append(5,"// FILENAME       : ".expand("%:t"))
-        call append(6,"// Author         : ".toupper($USER))
-        call append(7,"// LAST MODIFIED  : ".strftime("%Y-%m-%d %H:%M"))
-        call append(8,"// ***********************************************************************")
-        call append(9,"// DESCRIPTION    :")    
-        call append(10,"// ***********************************************************************")    
-        call append(11,"// $Revision: $")
-        call append(12,"// $Id: $")
-        call append(13,"// ***********************************************************************")    
+        call append(1,"//                        Copyright Picocom, 2021")
+        call append(2,"// ***********************************************************************")
+        call append(3,"// PROJECT        : ".$project_name)
+        call append(4,"// FILENAME       : ".expand("%:t"))
+        call append(5,"// Author         : ".toupper($USER))
+        call append(6,"// LAST MODIFIED  : ".strftime("%Y-%m-%d %H:%M"))
+        call append(7,"// ***********************************************************************")
+        call append(8,"// DESCRIPTION    :")    
+        call append(9,"// ***********************************************************************")    
+        call append(10,"// $Revision: $")
+        call append(11,"// $Id: $")
+        call append(12,"// ***********************************************************************")    
         ""let s:botline = line("$")
         ""call append(s:botline,"// ***********************************************************************")
         ""let s:botline1 = s:botline+1
@@ -469,19 +479,18 @@ function AddTitle()
         ""let s:botline2 = s:botline+2
     else
         call append(0,"// ***********************************************************************")
-        call append(1,"//                 Copyright (c) 2021.                                    ")
-        call append(2,"//             PICOCOMTECH®  ALL RIGHTS RESERVED                          ")
-        call append(3,"// ***********************************************************************")
-        call append(4,"// PROJECT        : ".$project_name)
-        call append(5,"// FILENAME       : ".expand("%:t"))
-        call append(6,"// Author         : ".toupper($USER))
-        call append(7,"// LAST MODIFIED  : ".strftime("%Y-%m-%d %H:%M"))
-        call append(8,"// ***********************************************************************")
-        call append(9,"// DESCRIPTION    :")    
-        call append(10,"// ***********************************************************************")    
-        call append(11,"// $Revision: $")
-        call append(12,"// $Id: $")
-        call append(13,"// ***********************************************************************")  
+        call append(1,"//                        Copyright Picocom, 2021")
+        call append(2,"// ***********************************************************************")
+        call append(3,"// PROJECT        : ".$project_name)
+        call append(4,"// FILENAME       : ".expand("%:t"))
+        call append(5,"// Author         : ".toupper($USER))
+        call append(6,"// LAST MODIFIED  : ".strftime("%Y-%m-%d %H:%M"))
+        call append(7,"// ***********************************************************************")
+        call append(8,"// DESCRIPTION    :")    
+        call append(9,"// ***********************************************************************")    
+        call append(10,"// $Revision: $")
+        call append(11,"// $Id: $")
+        call append(12,"// ***********************************************************************")  
 
         ""call append(0,"// ***********************************************************************")
         ""call append(1,"// *****************                                                       ")

@@ -28,12 +28,11 @@
 [user]
 	name = jiongz
 	email = jiongz@huanghe.pct.bj
-
-[https]
-proxy = http://172.16.18.27:10000
 [http]
-proxy = http://172.16.18.27:10000
+	proxy = 172.16.18.17:10000
 [credential]
 helper = store
 [core]
 	editor = /usr/bin/gvim
+[https]
+	proxy = 172.16.18.17:10000
