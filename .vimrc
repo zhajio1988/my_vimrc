@@ -103,6 +103,7 @@ let g:tagbar_type_systemverilog = {
             \ 'R' : 'property'
         \ },
     \ }
+
 """"""""""""""""""""""""""<minibuf>""""""""""""""""""""""""""""
 let g:miniBufExplMapCTabSwitchBufs=1
 let g:miniBufExplMapWindowsNavVim=1
