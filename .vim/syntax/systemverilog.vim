@@ -81,7 +81,7 @@ syn keyword verilogStatement   program endprogram
 syn keyword verilogStatement   bins binsof illegal_bins ignore_bins
 syn keyword verilogStatement   alias matches solve static assert
 syn keyword verilogStatement   assume super before expect bind
-syn keyword verilogStatement   extends null tagged extern this
+syn keyword verilogStatement   extends null tagged extern this implements
 syn keyword verilogStatement   first_match throughout timeprecision
 syn keyword verilogStatement   timeunit priority type union unique
 syn keyword verilogStatement   uwire var cross ref wait_order intersect
@@ -157,6 +157,7 @@ syn match   verilogMethod      "\.push_front\>"
 syn match   verilogMethod      "\.put\>"
 syn match   verilogMethod      "\.putc\>"
 syn match   verilogMethod      "\.rand_mode\>"
+syn match   verilogMethod      "\.constraint_mode\>"
 syn match   verilogMethod      "\.realtoa\>"
 syn match   verilogMethod      "\.resume\>"
 syn match   verilogMethod      "\.reverse\>"
@@ -647,7 +648,7 @@ syn keyword uvmMethod            create create_aliased_exports connect get_type_
 syn keyword uvmClass             uvm_tlm_transport_channel
 syn keyword uvmMethod            nb_transport transport
 
-syn keyword uvmMethod            main_phase end_of_elaboration_phase run_phase
+syn keyword uvmMethod            main_phase end_of_elaboration_phase start_of_simulation_phase run_phase
 syn keyword uvmMethod            configure_phase reset_phase final_phase build_phase connect_phase
 syn keyword uvmMethod            phase raise_objection drop_objection pre_reset_phase
 syn keyword uvmMethod            report_phase uvm_config_db uvm_phase post_randomize
@@ -685,6 +686,6 @@ if version >= 508 || !exists("did_verilog_syn_inits")
    HiLink uvmTodo                Todo
    delcommand HiLink
 endif
-let b:current_syntax = "verilog_systemverilog"
+let b:current_syntax = "systemverilog"
 " vim: ts=8
 

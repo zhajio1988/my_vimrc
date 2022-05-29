@@ -13,6 +13,9 @@ if exists("loaded_verilog_emacsauto")
 endif
 let loaded_verilog_emacsauto = 1
 
+let s:save_cpo = &cpo
+set cpo&vim
+
 " map \a, \d pair to Add and Delete functions, assuming \ is the leader
 " alternatively, map C-A, C-D to Add and Delete functions
 if !hasmapto('<Plug>VerilogEmacsAutoAdd')
@@ -81,3 +84,12 @@ function VerilogEmacsAutoFoldLevel(l)
    endif
    return '='
 endfunction
+
+function! Emacsauto()
+    call s:Add()
+endfunction
+
+command -nargs=0 Emacsauto call Emacsauto()
+
+let &cpo = s:save_cpo
+unlet s:save_cpo

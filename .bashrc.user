@@ -1,0 +1,192 @@
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+HISTIGNORE=" pwd:ls:cd:h"
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+function git-branch-name {
+  git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3
+}
+function git-branch-prompt {
+    local branch=`git-branch-name`
+    if [ $branch ]; then printf "[%s]" $branch; fi
+}
+color_prompt=no
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[0;32m\]\u\[\033[00m\]: \[\033[0;34m\]\w\[\033[00m\]\$ '
+else
+    if [[ -z $(git-branch-prompt) ]]; then
+        PS1='\[\033[0;32m\]\h\[\033[00m\]: \[\033[0;34m\]\w\[\033[00m\]\$ '
+    else 
+        PS1="\[\033[0;32m\]\$(git-branch-prompt)\[\033[0m\]: \[\033[0;34m\]\w\[\033[0m\]\$ "
+    fi
+fi
+unset color_prompt
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    #alias ls='ls --color=auto'
+    alias ls='ls --color=auto -F'    
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+export PATH=$PATH:$HOME/bin:$HOME/bin/bin:~/.local/bin:~/.cargo/bin
+# some more ls aliases
+alias ll='ls -alF'
+#a la='ls -A'
+alias l='ls -CF'
+alias h="history"
+alias l="ls -A -l -t -r "
+alias lt="ls -Atrlh"
+alias ll="ls -lsAgh"
+alias lm="ls -aslg | more"
+alias lg="ls -lsag"
+alias la="ls -A"
+alias dir="ls -lag | more"
+alias clr="/usr/bin/clear"
+alias gr='grep -n -R --exclude-dir=.git --color=auto'
+alias gv="gvim -geom=189x42+0+10"
+alias g="gvim -geom=189x42-0+50"
+alias gn='gvim -u "NONE"'
+# a diff=diff -qubr
+#a pd="pushd \!* > /dev/null ;"
+#a pop="popd > /dev/null ;"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias sb='. ~/.bashrc.user'
+alias gf='gv $(fzf)'
+alias fd='cd $(find * -type d | fzf)'
+## Files under current directory(fzf)
+## - You can select multiple items with TAB key
+#vim **<TAB>
+## Files under parent directory
+#vim ../**<TAB>
+## Files under parent directory that match `fzf`
+#vim ../fzf**<TAB>
+## Files under your home directory
+#vim ~/**<TAB>
+## Directories under current directory (single-selection)
+#cd **<TAB>
+
+alias kt='gnome-terminal --geometry=80x24+0+10&'
+alias pdf='evince'
+
+alias bsub='bsub -Is /opt/picocom/tools/bsub_wrapper.csh'
+#alias make='/opt/picocom/tools/bsub_make.sh'
+alias verdi='bsub -Is verdi'
+alias simvision='bsub -Is simvision'
+alias indago='bsub -Is indago'
+#a tee='2>&1 | tee'
+os_version=`lsb_release -a | grep "Release" |awk -F":" '{print $2}' | sed 's/^[ \t]*//g'`
+if [ "$os_version" = "6.10" ]; then
+    alias svctags='~/bin/bin/exctags -R --sort=yes --extras=+q --fields=+i --languages=SystemVerilog --langmap=SystemVerilog:+.svp `pwd`'
+    alias cctags='~/bin/bin/exctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extras=+q --languages=C++,C `pwd`'
+else
+    alias svctags='exctags -R --sort=yes --extras=+q --fields=+i --languages=SystemVerilog --langmap=SystemVerilog:+.svp `pwd`'
+    alias cctags='exctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extras=+q --languages=C++,C `pwd`'
+fi
+
+#-R --c++-kinds=+p --fields=+iaS --extra=+q
+#a rm='rm -i'
+alias vnc='vncserver -geometry 1920x1080 -depth 24'
+
+### path abbr ###
+alias work='cd /ic/proj/jiongz/work'
+alias ipdv='cd /proj/fe/jiongz/work/ip_dv/'
+alias socdv='cd /proj/fe/jiongz/work/soc_dv'
+alias 805='cd /taishan/temp/ic/wa/jiongz/soc_dv/pc805'
+alias home='cd /ic/user/jiongz'
+alias log='cd /ssd_fes/$USER'
+
+alias psm='"ps -ef|grep "`whoami`""'
+alias ps_apt='"ps -A | grep apt-get"'
+alias act_tr="sed -n '/ act_tr:/,/ act_tr_end/p'"
+alias exp_tr="sed -n '/ exp_tr:/,/ exp_tr_end/p'"
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+#a git_big='git rev-list --all --objects | > grep "$(git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -n 10 | awk -F ' '  '{print $1}')"'
+
+#_gvComplete()
+#{
+#    COMPREPLY=()
+#    local cur=${COMP_WORDS[COMP_CWORD]};
+#    local prev=${COMP_WORDS[COMP_CWORD-1]};
+#    compopt -o nospace
+#    COMPREPLY=( $(compgen  -d -f -- $cur) )
+#    #local i=0
+#    #for data in ${COMPREPLY[@]} 
+#    #do
+#    #    COMPREPLY[$i]=`basename ${data}`
+#    #    ((i++))
+#    #done
+#    return 0
+#}
+#complete -o nospace -F _gvComplete gv
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# exctags -R --sort=1 --c++-kinds=+p --fields=+iaS --extras=+q --language-force=C++ `pwd`
+# exctags -R --C-kinds=+p --fields=+aS --extras=+q `pwd`
+
+
+#change gnome-terminal tab name
+function tab() {
+  if [[ -z "$ORIG" ]]; then
+    ORIG=$PS1
+  fi
+  TITLE="\[\e]2;$*\a\]"
+  PS1=${ORIG}${TITLE}
+}
+
+function before(){
+    sed -n '/wait_dma_write_axi_mem_before/p' $1 |awk -F'wait_dma_write_axi_mem_before' '{print $2}' | sort
+}
+
+function after(){
+    sed -n '/wait_dma_write_axi_mem_after/p' $1 |awk -F'wait_dma_write_axi_mem_after' '{print $2}' | sort
+}
+#bsub use
+xhost +
+#rsync --delete-before -a -H -v --progress --stats  empty/ scram_gen
+alias make='/opt/picocom/tools/bsub_make.sh'
+alias bjcnt="bjobs -u all -q normal|awk '{print $2}' | sort| wc -l"
+
+#find . -name "*.svh" |xargs -i{} sh -c "echo -n {}; git log --reverse  -1 --pretty=format:%an {}" | tee log
+
+#safe rm
+#mkdir -p /tmp/jiongz                                   
+#alias rm=trash                                      
+#alias r=trash
+#alias rl='ls /tmp/jiongz'
+#alias ur=undelfile
+#undelfile(){
+#    mv -i /tmp/jiongz/$@ ./
+#}
+#trash(){
+#    mv $@ /tmp/jiongz/
+#}
+#

@@ -98,6 +98,9 @@ func TestEqual(t *testing.T) {
 	}
 	match("ABC", -1, -1)
 	match("AbC", 0, 3)
+	match("AbC  ", 0, 3)
+	match(" AbC ", 1, 4)
+	match("  AbC", 2, 5)
 }
 
 func TestCaseSensitivity(t *testing.T) {
@@ -128,7 +131,7 @@ func TestCaseSensitivity(t *testing.T) {
 func TestOrigTextAndTransformed(t *testing.T) {
 	pattern := BuildPattern(true, algo.FuzzyMatchV2, true, CaseSmart, false, true, true, []Range{}, Delimiter{}, []rune("jg"))
 	tokens := Tokenize("junegunn", Delimiter{})
-	trans := Transform(tokens, []Range{Range{1, 1}})
+	trans := Transform(tokens, []Range{{1, 1}})
 
 	origBytes := []byte("junegunn.choi")
 	for _, extended := range []bool{false, true} {

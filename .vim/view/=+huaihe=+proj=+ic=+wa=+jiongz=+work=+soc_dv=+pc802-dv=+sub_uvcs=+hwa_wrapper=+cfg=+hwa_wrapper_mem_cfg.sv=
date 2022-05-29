@@ -1,0 +1,250 @@
+let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
+argglobal
+let s:cpo_save=&cpo
+set cpo&vim
+nnoremap <buffer> <silent> <NL> i=SV_JumpCtrlJ()
+noremap <buffer> <silent> \re :call mmtemplates#core#EditTemplateFiles(g:SV_Templates,-1)
+noremap <buffer> <silent> \rr :call mmtemplates#core#ReadTemplates(g:SV_Templates,"reload","all")
+noremap <buffer> <silent> \nts :call mmtemplates#core#ChooseStyle(g:SV_Templates,"!pick")
+vnoremap <buffer> <silent> \ms :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Macros.Spawn use")
+nnoremap <buffer> <silent> \ms :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Macros.Spawn use")
+vnoremap <buffer> <silent> \msd :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Macros.Spawn define")
+nnoremap <buffer> <silent> \msd :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Macros.Spawn define")
+vnoremap <buffer> <silent> \pf :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.final_phase")
+nnoremap <buffer> <silent> \pf :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.final_phase")
+vnoremap <buffer> <silent> \pt :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.report_phase")
+nnoremap <buffer> <silent> \pt :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.report_phase")
+vnoremap <buffer> <silent> \pk :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.check_phase")
+nnoremap <buffer> <silent> \pk :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.check_phase")
+vnoremap <buffer> <silent> \px :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.extract_phase")
+nnoremap <buffer> <silent> \px :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.extract_phase")
+vnoremap <buffer> <silent> \pr :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.run_phase")
+nnoremap <buffer> <silent> \pr :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.run_phase")
+vnoremap <buffer> <silent> \psos :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.start_of_simulation_phase")
+nnoremap <buffer> <silent> \psos :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.start_of_simulation_phase")
+vnoremap <buffer> <silent> \peoe :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.end_of_elaboration_phase")
+nnoremap <buffer> <silent> \peoe :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.end_of_elaboration_phase")
+vnoremap <buffer> <silent> \pc :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.connect_phase")
+nnoremap <buffer> <silent> \pc :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.connect_phase")
+vnoremap <buffer> <silent> \pb :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.build_phase")
+nnoremap <buffer> <silent> \pb :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.build_phase")
+vnoremap <buffer> <silent> \pn :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.new")
+nnoremap <buffer> <silent> \pn :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.new")
+vnoremap <buffer> <silent> \cd :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Driver")
+nnoremap <buffer> <silent> \cd :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Driver")
+vnoremap <buffer> <silent> \cm :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Monitor")
+nnoremap <buffer> <silent> \cm :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Monitor")
+vnoremap <buffer> <silent> \ce :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Environment")
+nnoremap <buffer> <silent> \ce :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Environment")
+vnoremap <buffer> <silent> \ca :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Agent")
+nnoremap <buffer> <silent> \ca :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Agent")
+vnoremap <buffer> <silent> \csi :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Sequence Item")
+nnoremap <buffer> <silent> \csi :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Sequence Item")
+vnoremap <buffer> <silent> \cq :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Sequence")
+nnoremap <buffer> <silent> \cq :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Sequence")
+vnoremap <buffer> <silent> \isu :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.analysis_export")
+nnoremap <buffer> <silent> \isu :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.analysis_export")
+vnoremap <buffer> <silent> \ufo :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.uvm_field_array_object")
+nnoremap <buffer> <silent> \ufo :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.uvm_field_array_object")
+vnoremap <buffer> <silent> \ufr :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.uvm_field_array_real")
+nnoremap <buffer> <silent> \ufr :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.uvm_field_array_real")
+vnoremap <buffer> <silent> \ufe :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.uvm_field_array_enum")
+nnoremap <buffer> <silent> \ufe :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.uvm_field_array_enum")
+vnoremap <buffer> <silent> \ufs :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.uvm_field_array_string")
+nnoremap <buffer> <silent> \ufs :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.uvm_field_array_string")
+vnoremap <buffer> <silent> \ufi :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.uvm_field_array_int")
+nnoremap <buffer> <silent> \ufi :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.uvm_field_array_int")
+vnoremap <buffer> <silent> \icub :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.component_utils_block","v")
+nnoremap <buffer> <silent> \icub :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.component_utils_block")
+vnoremap <buffer> <silent> \icu :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.component_utils")
+nnoremap <buffer> <silent> \icu :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.component_utils")
+vnoremap <buffer> <silent> \oub :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.object_utils_block","v")
+nnoremap <buffer> <silent> \oub :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.object_utils_block")
+vnoremap <buffer> <silent> \ou :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.object_utils")
+nnoremap <buffer> <silent> \ou :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.object_utils")
+vnoremap <buffer> <silent> \cdbg :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.configdb_get")
+nnoremap <buffer> <silent> \cdbg :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.configdb_get")
+vnoremap <buffer> <silent> \cdbs :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.configdb_set")
+nnoremap <buffer> <silent> \cdbs :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.configdb_set")
+vnoremap <buffer> <silent> \cv :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Variable")
+nnoremap <buffer> <silent> \cv :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Variable")
+vnoremap <buffer> <silent> \chv :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Module description")
+nnoremap <buffer> <silent> \chv :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Module description")
+vnoremap <buffer> <silent> \chsv :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Class description")
+nnoremap <buffer> <silent> \chsv :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Class description")
+vnoremap <buffer> <silent> \cons :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Constructor")
+nnoremap <buffer> <silent> \cons :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Constructor")
+vnoremap <buffer> <silent> \cf :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Function")
+nnoremap <buffer> <silent> \cf :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Function")
+vnoremap <buffer> <silent> \ct :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Task")
+nnoremap <buffer> <silent> \ct :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Task")
+nnoremap <buffer> <silent> \cub :call SV_UncommentBlock()
+vnoremap <buffer> <silent> \cb :call SV_CommentBlock("v")
+nnoremap <buffer> <silent> \cb :call SV_CommentBlock("a")
+vnoremap <buffer> <silent> \cc :call SV_CommentToggle()j
+nnoremap <buffer> <silent> \cc :call SV_CommentToggle()j
+nnoremap <buffer> <silent> \cs :call SV_GetLineEndCommCol()
+vnoremap <buffer> <silent> \cj :call SV_AlignLineEndComm()
+nnoremap <buffer> <silent> \cj :call SV_AlignLineEndComm()
+noremap <buffer> <silent> \cl :call SV_EndOfLineComment()
+noremap <buffer> <silent> \hp :call SV_HelpSupport()
+inoremap <buffer> <silent> <NL> =SV_JumpCtrlJ()
+inoremap <buffer> <silent> \re :call mmtemplates#core#EditTemplateFiles(g:SV_Templates,-1)
+inoremap <buffer> <silent> \rr :call mmtemplates#core#ReadTemplates(g:SV_Templates,"reload","all")
+inoremap <buffer> <silent> \nts :call mmtemplates#core#ChooseStyle(g:SV_Templates,"!pick")
+inoremap <buffer> <silent> \ms :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Macros.Spawn use","i")
+inoremap <buffer> <silent> \msd :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Macros.Spawn define","i")
+inoremap <buffer> <silent> \pf :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.final_phase","i")
+inoremap <buffer> <silent> \pt :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.report_phase","i")
+inoremap <buffer> <silent> \pk :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.check_phase","i")
+inoremap <buffer> <silent> \px :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.extract_phase","i")
+inoremap <buffer> <silent> \pr :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.run_phase","i")
+inoremap <buffer> <silent> \psos :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.start_of_simulation_phase","i")
+inoremap <buffer> <silent> \peoe :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.end_of_elaboration_phase","i")
+inoremap <buffer> <silent> \pc :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.connect_phase","i")
+inoremap <buffer> <silent> \pb :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.build_phase","i")
+inoremap <buffer> <silent> \pn :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Phases.new","i")
+inoremap <buffer> <silent> \cd :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Driver","i")
+inoremap <buffer> <silent> \cm :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Monitor","i")
+inoremap <buffer> <silent> \ce :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Environment","i")
+inoremap <buffer> <silent> \ca :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Agent","i")
+inoremap <buffer> <silent> \csi :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Sequence Item","i")
+inoremap <buffer> <silent> \cq :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Classes.Sequence","i")
+inoremap <buffer> <silent> \isu :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.analysis_export","i")
+inoremap <buffer> <silent> \ufo :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.uvm_field_array_object","i")
+inoremap <buffer> <silent> \ufr :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.uvm_field_array_real","i")
+inoremap <buffer> <silent> \ufe :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.uvm_field_array_enum","i")
+inoremap <buffer> <silent> \ufs :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.uvm_field_array_string","i")
+inoremap <buffer> <silent> \ufi :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.uvm_field_array_int","i")
+inoremap <buffer> <silent> \icub :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.component_utils_block","i")
+inoremap <buffer> <silent> \icu :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.component_utils","i")
+inoremap <buffer> <silent> \oub :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.object_utils_block","i")
+inoremap <buffer> <silent> \ou :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.object_utils","i")
+inoremap <buffer> <silent> \cdbg :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.configdb_get","i")
+inoremap <buffer> <silent> \cdbs :call mmtemplates#core#InsertTemplate(g:SV_Templates,"UVM.Idioms.configdb_set","i")
+inoremap <buffer> <silent> \cv :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Variable","i")
+inoremap <buffer> <silent> \chv :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Module description","i")
+inoremap <buffer> <silent> \chsv :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Class description","i")
+inoremap <buffer> <silent> \cons :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Constructor","i")
+inoremap <buffer> <silent> \cf :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Function","i")
+inoremap <buffer> <silent> \ct :call mmtemplates#core#InsertTemplate(g:SV_Templates,"Comments.Task","i")
+inoremap <buffer> <silent> \cb :call SV_CommentBlock("a")
+inoremap <buffer> <silent> \cj :call SV_AlignLineEndComm()
+inoremap <buffer> <silent> \cl :call SV_EndOfLineComment()
+inoremap <buffer> <silent> \hp :call SV_HelpSupport()
+let &cpo=s:cpo_save
+unlet s:cpo_save
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal backupcopy=
+setlocal balloonexpr=
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal nocindent
+setlocal cinkeys=0{,0},0),:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-
+setlocal commentstring=/*%s*/
+setlocal complete=.,w,i,b,u,d,k
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal completefunc=
+setlocal nocopyindent
+setlocal cryptmethod=
+setlocal cursorbind
+setlocal cursorcolumn
+setlocal nocursorline
+setlocal define=
+setlocal dictionary=
+setlocal diff
+setlocal equalprg=
+setlocal errorformat=
+setlocal expandtab
+if &filetype != 'systemverilog'
+setlocal filetype=systemverilog
+endif
+setlocal foldcolumn=2
+setlocal foldenable
+setlocal foldexpr=VimFunctionFoldExpr()
+setlocal foldignore=#
+setlocal foldlevel=0
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=diff
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=foldtext()
+setlocal formatexpr=
+setlocal formatoptions=tcq
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal grepprg=
+setlocal iminsert=2
+setlocal imsearch=2
+setlocal include=
+setlocal includeexpr=
+setlocal indentexpr=
+setlocal indentkeys=0{,0},:,0#,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,63,_,192-255
+setlocal keywordprg=
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispwords=
+setlocal nolist
+setlocal makeprg=
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=octal,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=
+setlocal path=
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal readonly
+setlocal norelativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal scrollbind
+setlocal shiftwidth=3
+setlocal noshortname
+setlocal smartindent
+setlocal softtabstop=3
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\	\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en
+setlocal statusline=
+setlocal suffixesadd=
+setlocal noswapfile
+setlocal synmaxcol=3000
+if &syntax != 'systemverilog'
+setlocal syntax=systemverilog
+endif
+setlocal tabstop=3
+setlocal tags=
+setlocal textwidth=0
+setlocal thesaurus=
+setlocal noundofile
+setlocal undolevels=-123456
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal nowrap
+setlocal wrapmargin=0
+let s:l = 24 - ((23 * winheight(0) + 9) / 18)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+24
+normal! 07|
+let &so = s:so_save | let &siso = s:siso_save
+doautoall SessionLoadPost
+" vim: set ft=vim :

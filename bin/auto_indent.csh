@@ -2,7 +2,7 @@
 
 set filelist = `find ./`
 foreach file ($filelist)
-    if($file =~ "*.sv") then
-        gvim -es -c ":Eamcsauto" -c ":w" -c ":q" $file
+    if($file =~ "*.sv" || $file =~ "*.svh") then
+        vim -e -c ":Emacsauto" -c ":w" -c ":q" $file
     endif
 end

@@ -1,3 +1,4 @@
+SHELL          := bash
 GO             ?= go
 GOOS           ?= $(word 1, $(subst /, " ", $(word 4, $(shell go version))))
 
@@ -5,8 +6,26 @@ MAKEFILE       := $(realpath $(lastword $(MAKEFILE_LIST)))
 ROOT_DIR       := $(shell dirname $(MAKEFILE))
 SOURCES        := $(wildcard *.go src/*.go src/*/*.go) $(MAKEFILE)
 
-REVISION       := $(shell git log -n 1 --pretty=format:%h -- $(SOURCES))
-BUILD_FLAGS    := -a -ldflags "-X main.revision=$(REVISION) -w -extldflags=$(LDFLAGS)" -tags "$(TAGS)"
+ifdef FZF_VERSION
+VERSION        := $(FZF_VERSION)
+else
+VERSION        := $(shell git describe --abbrev=0 2> /dev/null)
+endif
+ifeq ($(VERSION),)
+$(error Not on git repository; cannot determine $$FZF_VERSION)
+endif
+VERSION_TRIM   := $(shell sed "s/-.*//" <<< $(VERSION))
+VERSION_REGEX  := $(subst .,\.,$(VERSION_TRIM))
+
+ifdef FZF_REVISION
+REVISION       := $(FZF_REVISION)
+else
+REVISION       := $(shell git log -n 1 --pretty=format:%h -- $(SOURCES) 2> /dev/null)
+endif
+ifeq ($(REVISION),)
+$(error Not on git repository; cannot determine $$FZF_REVISION)
+endif
+BUILD_FLAGS    := -a -ldflags "-s -w -X main.version=$(VERSION) -X main.revision=$(REVISION)" -tags "$(TAGS)"
 
 BINARY32       := fzf-$(GOOS)_386
 BINARY64       := fzf-$(GOOS)_amd64
@@ -15,14 +34,7 @@ BINARYARM6     := fzf-$(GOOS)_arm6
 BINARYARM7     := fzf-$(GOOS)_arm7
 BINARYARM8     := fzf-$(GOOS)_arm8
 BINARYPPC64LE  := fzf-$(GOOS)_ppc64le
-VERSION        := $(shell awk -F= '/version =/ {print $$2}' src/constants.go | tr -d "\" ")
-RELEASE32      := fzf-$(VERSION)-$(GOOS)_386
-RELEASE64      := fzf-$(VERSION)-$(GOOS)_amd64
-RELEASEARM5    := fzf-$(VERSION)-$(GOOS)_arm5
-RELEASEARM6    := fzf-$(VERSION)-$(GOOS)_arm6
-RELEASEARM7    := fzf-$(VERSION)-$(GOOS)_arm7
-RELEASEARM8    := fzf-$(VERSION)-$(GOOS)_arm8
-RELEASEPPC64LE := fzf-$(VERSION)-$(GOOS)_ppc64le
+BINARYRISCV64  := fzf-$(GOOS)_riscv64
 
 # https://en.wikipedia.org/wiki/Uname
 UNAME_M := $(shell uname -m)
@@ -42,57 +54,74 @@ else ifeq ($(UNAME_M),armv7l)
 	BINARY := $(BINARYARM7)
 else ifeq ($(UNAME_M),armv8l)
 	BINARY := $(BINARYARM8)
+else ifeq ($(UNAME_M),arm64)
+	BINARY := $(BINARYARM8)
+else ifeq ($(UNAME_M),aarch64)
+	BINARY := $(BINARYARM8)
 else ifeq ($(UNAME_M),ppc64le)
 	BINARY := $(BINARYPPC64LE)
+else ifeq ($(UNAME_M),riscv64)
+	BINARY := $(BINARYRISCV64)
 else
-$(error "Build on $(UNAME_M) is not supported, yet.")
+$(error Build on $(UNAME_M) is not supported, yet.)
 endif
 
 all: target/$(BINARY)
 
-target:
-	mkdir -p $@
-
-ifeq ($(GOOS),windows)
-release: target/$(BINARY32) target/$(BINARY64)
-	cd target && cp -f $(BINARY32) fzf.exe && zip $(RELEASE32).zip fzf.exe
-	cd target && cp -f $(BINARY64) fzf.exe && zip $(RELEASE64).zip fzf.exe
-	cd target && rm -f fzf.exe
-else ifeq ($(GOOS),linux)
-release: target/$(BINARY32) target/$(BINARY64) target/$(BINARYARM5) target/$(BINARYARM6) target/$(BINARYARM7) target/$(BINARYARM8) target/$(BINARYPPC64LE)
-	cd target && cp -f $(BINARY32) fzf && tar -czf $(RELEASE32).tgz fzf
-	cd target && cp -f $(BINARY64) fzf && tar -czf $(RELEASE64).tgz fzf
-	cd target && cp -f $(BINARYARM5) fzf && tar -czf $(RELEASEARM5).tgz fzf
-	cd target && cp -f $(BINARYARM6) fzf && tar -czf $(RELEASEARM6).tgz fzf
-	cd target && cp -f $(BINARYARM7) fzf && tar -czf $(RELEASEARM7).tgz fzf
-	cd target && cp -f $(BINARYARM8) fzf && tar -czf $(RELEASEARM8).tgz fzf
-	cd target && cp -f $(BINARYPPC64LE) fzf && tar -czf $(RELEASEPPC64LE).tgz fzf
-	cd target && rm -f fzf
-else
-release: target/$(BINARY32) target/$(BINARY64)
-	cd target && cp -f $(BINARY32) fzf && tar -czf $(RELEASE32).tgz fzf
-	cd target && cp -f $(BINARY64) fzf && tar -czf $(RELEASE64).tgz fzf
-	cd target && rm -f fzf
-endif
-
-release-all: clean test
-	GOOS=darwin  make release
-	GOOS=linux   make release
-	GOOS=freebsd make release
-	GOOS=openbsd make release
-	GOOS=windows make release
-
 test: $(SOURCES)
+	[ -z "$$(gofmt -s -d src)" ] || (gofmt -s -d src; exit 1)
 	SHELL=/bin/sh GOOS= $(GO) test -v -tags "$(TAGS)" \
 				github.com/junegunn/fzf/src \
 				github.com/junegunn/fzf/src/algo \
 				github.com/junegunn/fzf/src/tui \
 				github.com/junegunn/fzf/src/util
 
+bench:
+	cd src && SHELL=/bin/sh GOOS= $(GO) test -v -tags "$(TAGS)" -run=Bench -bench=. -benchmem
+
 install: bin/fzf
 
+build:
+	goreleaser --rm-dist --snapshot
+
+release:
+ifndef GITHUB_TOKEN
+	$(error GITHUB_TOKEN is not defined)
+endif
+
+	# Check if we are on master branch
+ifneq ($(shell git symbolic-ref --short HEAD),master)
+	$(error Not on master branch)
+endif
+
+	# Check if version numbers are properly updated
+	grep -q ^$(VERSION_REGEX)$$ CHANGELOG.md
+	grep -qF '"fzf $(VERSION_TRIM)"' man/man1/fzf.1
+	grep -qF '"fzf $(VERSION_TRIM)"' man/man1/fzf-tmux.1
+	grep -qF $(VERSION) install
+	grep -qF $(VERSION) install.ps1
+
+	# Make release note out of CHANGELOG.md
+	mkdir -p tmp
+	sed -n '/^$(VERSION_REGEX)$$/,/^[0-9]/p' CHANGELOG.md | tail -r | \
+		sed '1,/^ *$$/d' | tail -r | sed 1,2d | tee tmp/release-note
+
+	# Push to temp branch first so that install scripts always works on master branch
+	git checkout -B temp master
+	git push origin temp --follow-tags --force
+
+	# Make a GitHub release
+	goreleaser --rm-dist --release-notes tmp/release-note
+
+	# Push to master
+	git checkout master
+	git push origin master
+
+	# Delete temp branch
+	git push origin --delete temp
+
 clean:
-	$(RM) -r target
+	$(RM) -r dist target
 
 target/$(BINARY32): $(SOURCES)
 	GOARCH=386 $(GO) build $(BUILD_FLAGS) -o $@
@@ -116,6 +145,9 @@ target/$(BINARYARM8): $(SOURCES)
 target/$(BINARYPPC64LE): $(SOURCES)
 	GOARCH=ppc64le $(GO) build $(BUILD_FLAGS) -o $@
 
+target/$(BINARYRISCV64): $(SOURCES)
+	GOARCH=riscv64 $(GO) build $(BUILD_FLAGS) -o $@
+
 bin/fzf: target/$(BINARY) | bin
 	cp -f target/$(BINARY) bin/fzf
 
@@ -131,4 +163,4 @@ update:
 	$(GO) get -u
 	$(GO) mod tidy
 
-.PHONY: all release release-all test install clean docker docker-test update
+.PHONY: all build release test bench install clean docker docker-test update

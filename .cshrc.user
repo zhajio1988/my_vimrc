@@ -41,10 +41,7 @@ a       lg        "ls -lsag"
 a       la        "ls -lsA"
 a       dir       "ls -lag | more"
 a       clr	      "clear"
-a       gz        "find ./ |xargs grep -n --color=auto"
 a       pdf       "evince"
-a       imc       "imc -nocopyright -gui -nostdout&"
-a       wave      "simvision -nocopyright -schematic -source -waves&" 
 
 #sos command alias
 a       sosco     'soscmd co'
@@ -69,7 +66,7 @@ a       svnst "svn st | awk '/^[ACDIMR\?!~]/'"
 set     prompt_char="~"
 set     host=`hostname` 
 set     host=`echo -n $host|cut -d. -f1` 
-a       setprmt   'set prompt = "$host { $cwd }$prompt_char "'
+a       setprmt   'set prompt = "{ $cwd }$prompt_char "'
 setprmt
 a       cd        "cd \!* ; setprmt ;ls"
 a       ..        "cd .."
@@ -83,13 +80,20 @@ a       ....      "cd ../../.."
 ########################
 #  === set for gvim ===
 ########################
-set term = konsole 
-a   gv gvim -geom=170x42+0+50
-a   g  gv -geom=170x42-0+50
-a   gf gvim -u "NONE"
-a   kt  "konsole --nofork --geometry=800x600&"
+a   gz "find ./ |xargs grep -n --color=auto"
+a   gr 'grep -n -R --exclude-dir=.git --color=auto'
+a   gv "gvim -geom=185x45+0+10"
+a   gf 'gv $(fzf)'
+a   g "gv -geom=185x45-0+50"
+a   gn 'gvim -u "NONE"'
+a   kt '"konsole --nofork --geometry=800x600&"'
+a   fcd 'cd $(find * -type d | fzf)'
+a   exctags 'exctags -R --extras=+q --fields=+i'
+a   rm 'rm -i'
 
 a   psm "ps -ef|grep "`whoami`""
+
+setenv PATH ~/bin:$PATH
 
 ########################
 #  ===some useful command===
