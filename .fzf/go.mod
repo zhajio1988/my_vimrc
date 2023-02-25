@@ -7,7 +7,7 @@ require (
 	github.com/mattn/go-shellwords v1.0.12
 	github.com/rivo/uniseg v0.2.0
 	github.com/saracen/walker v0.1.2
-	golang.org/x/sys v0.0.0-20220406163625-3f8b81556e12
+	golang.org/x/sys v0.1.0
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211
 )
 
