@@ -1,3 +1,5 @@
+echo "source own.bashrc"
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -13,6 +15,9 @@ shopt -s histappend
 HISTSIZE=1000
 HISTFILESIZE=2000
 HISTIGNORE=" pwd:ls:cd:h"
+if [[ ($COLORTERM == gnome-terminal || $(cat /proc/$PPID/cmdline) == *gnome-terminal* ) && $TERM != screen* ]]; then
+    export TERM=xterm-256color
+fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
@@ -65,7 +70,7 @@ alias lg="ls -lsag"
 alias la="ls -A"
 alias dir="ls -lag | more"
 alias clr="/usr/bin/clear"
-alias gr='grep -n -R --exclude-dir=.git --color=auto'
+alias gr='grep -n -R --exclude-dir=.git --exclude-dir=doc --exclude-dir=software/coremark/docs --color=auto'
 alias gv="gvim -geom=189x42+0+10"
 alias g="gvim -geom=189x42-0+50"
 alias gn='gvim -u "NONE"'
@@ -78,6 +83,7 @@ alias ....="cd ../../.."
 alias sb='. ~/.bashrc.user'
 alias gf='gv $(fzf)'
 alias fd='cd $(find * -type d | fzf)'
+#alias uvm_test='find test/src_uvm/testcases/ |fzf |xargs -i{} basename {} .sv'
 ## Files under current directory(fzf)
 ## - You can select multiple items with TAB key
 #vim **<TAB>
@@ -147,8 +153,6 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 #}
 #complete -o nospace -F _gvComplete gv
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
 # exctags -R --sort=1 --c++-kinds=+p --fields=+iaS --extras=+q --language-force=C++ `pwd`
 # exctags -R --C-kinds=+p --fields=+aS --extras=+q `pwd`
 
@@ -175,6 +179,8 @@ xhost +
 alias make='/opt/picocom/tools/bsub_make.sh'
 alias bjcnt="bjobs -u all -q normal|awk '{print $2}' | sort| wc -l"
 
+alias dg="du -sh *|awk '{if($1 ~ /.*G/) print $1, $2}'"
+#bjobs -u gitlab-ci -w |awk '{if($7 ~ '/_regr_/') print $1}'
 #find . -name "*.svh" |xargs -i{} sh -c "echo -n {}; git log --reverse  -1 --pretty=format:%an {}" | tee log
 
 #safe rm
@@ -190,3 +196,18 @@ alias bjcnt="bjobs -u all -q normal|awk '{print $2}' | sort| wc -l"
 #    mv $@ /tmp/jiongz/
 #}
 #
+#
+function settitle()
+{
+    if [ $# -eq 0 ]
+        then
+        eval set -- "\\u@\\h: \\w"
+    fi
+
+    case $TERM in
+        xterm*) local title="\[\033]0;$@\007\]";;
+        *) local title=''
+    esac
+    local prompt=$(echo "$PS1" | sed -e 's/\\\[\\033\]0;.*\\007\\\]//')
+    PS1="${title}${prompt}"
+}

@@ -1,2 +1,4 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =0
+let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_1='/ssd_fes/jiongz/soc_dv/pc803/c920_synth/C920_R1S7P0_simulation/smart_run/tests/cases'
+let g:netrw_dirhist_2='/ssd_fes/jiongz/soc_dv/pc803/c920_synth/C920_R1S7P0_simulation/smart_run/tests/cases/dynamic_freq'

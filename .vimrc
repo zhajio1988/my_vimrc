@@ -181,18 +181,19 @@ ab /b ///<
 let $project_name = $PRJ_NAME
 set tags+=~/ctags/uvm_tags
 set tags+=~/ctags/jesd_tags
+set tags+=~/ctags/jesd_ip_tags
 set tags+=~/ctags/soc_vv_tags
 set tags+=~/ctags/vip_tags
 set tags+=~/ctags/eth_tags
 set tags+=~/ctags/hwa_tags
-set tags+=~/ctags/soc_fw_tags
-set tags+=~/ctags/andes_tags
+set tags+=~/ctags/vfw_tags
+set tags+=~/ctags/805_c_h_tags
 set tags+=~/ctags/fhi_tags
-set tags+=~/ctags/ot_tags
-set tags+=~/ctags/pal_tags
-set tags+=~/ctags/fw_tags
-set tags+=~/ctags/hwal_tags
+set tags+=~/ctags/titan_tags
+set tags+=~/ctags/sc_tags
 set tags+=./tags
+set tags+=~/github/sifive-freedom-e-sdk/tags
+set tags+=~/github/RTOS-SDK-C9xx-RV64/tags
 if $project_name =~ 'll'
 endif
 
@@ -461,18 +462,19 @@ function AddTitle()
     let s:extension = expand("%:e") 
     if s:extension =~ 'cpp' || s:extension =~ 'h' ||  s:extension =~ 'c'
         call append(0,"// ***********************************************************************")
-        call append(1,"//                        Copyright Picocom, 2021")
-        call append(2,"// ***********************************************************************")
-        call append(3,"// PROJECT        : ".$project_name)
-        call append(4,"// FILENAME       : ".expand("%:t"))
-        call append(5,"// Author         : ".toupper($USER))
-        call append(6,"// LAST MODIFIED  : ".strftime("%Y-%m-%d %H:%M"))
-        call append(7,"// ***********************************************************************")
-        call append(8,"// DESCRIPTION    :")    
-        call append(9,"// ***********************************************************************")    
-        call append(10,"// $Revision: $")
-        call append(11,"// $Id: $")
-        call append(12,"// ***********************************************************************")    
+        call append(1,"//                 Copyright (c) ".strftime("%Y"). ".")
+        call append(2,"//             Picocom®  ALL RIGHTS RESERVED")
+        call append(3,"// ***********************************************************************")
+        call append(4,"// PROJECT        : ".$project_name)
+        call append(5,"// FILENAME       : ".expand("%:t"))
+        call append(6,"// Author         : ".toupper($USER))
+        call append(7,"// LAST MODIFIED  : ".strftime("%Y-%m-%d %H:%M"))
+        call append(8,"// ***********************************************************************")
+        call append(9,"// DESCRIPTION    :")    
+        call append(10,"// ***********************************************************************")    
+        call append(11,"// $Revision: $")
+        call append(12,"// $Id: $")
+        call append(13,"// ***********************************************************************")    
         ""let s:botline = line("$")
         ""call append(s:botline,"// ***********************************************************************")
         ""let s:botline1 = s:botline+1
@@ -480,18 +482,19 @@ function AddTitle()
         ""let s:botline2 = s:botline+2
     else
         call append(0,"// ***********************************************************************")
-        call append(1,"//                        Copyright Picocom, 2021")
-        call append(2,"// ***********************************************************************")
-        call append(3,"// PROJECT        : ".$project_name)
-        call append(4,"// FILENAME       : ".expand("%:t"))
-        call append(5,"// Author         : ".toupper($USER))
-        call append(6,"// LAST MODIFIED  : ".strftime("%Y-%m-%d %H:%M"))
-        call append(7,"// ***********************************************************************")
-        call append(8,"// DESCRIPTION    :")    
-        call append(9,"// ***********************************************************************")    
-        call append(10,"// $Revision: $")
-        call append(11,"// $Id: $")
-        call append(12,"// ***********************************************************************")  
+        call append(1,"//                 Copyright (c) ".strftime("%Y"). ".")
+        call append(2,"//             Picocom®  ALL RIGHTS RESERVED")
+        call append(3,"// ***********************************************************************")
+        call append(4,"// PROJECT        : ".$project_name)
+        call append(5,"// FILENAME       : ".expand("%:t"))
+        call append(6,"// Author         : ".toupper($USER))
+        call append(7,"// LAST MODIFIED  : ".strftime("%Y-%m-%d %H:%M"))
+        call append(8,"// ***********************************************************************")
+        call append(9,"// DESCRIPTION    :")    
+        call append(10,"// ***********************************************************************")    
+        call append(11,"// $Revision: $")
+        call append(12,"// $Id: $")
+        call append(13,"// ***********************************************************************")  
 
         ""call append(0,"// ***********************************************************************")
         ""call append(1,"// *****************                                                       ")

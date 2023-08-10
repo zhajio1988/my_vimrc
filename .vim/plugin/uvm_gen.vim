@@ -95,7 +95,7 @@ endfunction    " ----------  end of function C_CheckGlobal ----------
 " make a header
 function s:UVMAddHeader()
     call append(0,"// ***********************************************************************")
-    call append(1,"//                 Copyright (c) 2019.                                    ")
+    call append(1,"//                 Copyright (c) 2023.                                    ")
     call append(2,"//             PICOCOMTECH®  ALL RIGHTS RESERVED                          ")
     call append(3,"// ***********************************************************************")
     call append(4,"// PROJECT        : ".$project_name)

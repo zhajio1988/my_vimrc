@@ -34,7 +34,7 @@ syn region yamlComment	start="\#" end="$" contains=@yamlSpelling
 syn match yamlIndicator	"#YAML:\S\+"
 
 syn region yamlString	start="\(^\|\s\|\[\|\,\|\-\)\@<='" end="'" skip="\\'" contains=@yamlSpelling
-syn region yamlString	start='"' end='"' skip='\\"' contains=yamlEscape contains=@yamlSpelling
+syn region yamlString	start=/[^\\]"/ skip=/\\"/ end=/"/ contains=@yamlSpelling
 syn region yamlString	matchgroup=yamlBlock start=/[>|]\s*\n\+\z(\s\+\)\S/rs=s+1 skip=/^\%(\z1\S\|^$\)/ end=/^\z1\@!.*/me=s-1 contains=@yamlSpelling
 syn region yamlString	matchgroup=yamlBlock start=/[>|]\(\d\|[+-]\)\s*\n\+\z(\s\+\)\S/rs=s+2 skip=/^\%(\z1\S\|^$\)/ end=/^\z1\@!.*/me=s-1 contains=@yamlSpelling
 syn region yamlString	matchgroup=yamlBlock start=/[>|]\d\(\d\|[+-]\)\s*\n\+\z(\s\+\)\S/rs=s+3 skip=/^\%(\z1\S\|^$\)/ end=/^\z1\@!.*/me=s-1 contains=@yamlSpelling
