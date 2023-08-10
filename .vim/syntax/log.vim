@@ -107,6 +107,45 @@ syn match  logWarning     "^ld: warning .\+"
 syn match  logWarning     "%Warning: .\+"
 syn match  logRed         "^..01;31m.\+"
 
+syn match  logError       "^Error-\[.*]"
+syn match  logFatal       "^UVM_ERROR .\+"
+syn match  logError       ".*Null object access"
+
+syn match  logSva       "^Fatal:"
+syn match  logSva       "^Solver failed"
+syn match  logSva       "^\[ERROR\]:"
+syn match  logSva       "^\[FAIL\]:"
+"syn match  logWarning     ".\+ Timing violation .\+"
+
+""    regModelWarnPattern0 = r'.*a resource with meta characters in the field name has been created.*'
+""    regModelWarnPattern1 = r'.*already registered with factory. No string-based lookup support for multiple types with the same type name.'
+""    cevaTestFailPattern = r'.*TEST FAILED.*'
+""    nullObjectFailPattern = r'.*Null object access'
+""    svaFailPattern = r'^Fatal:'
+""    cstFailPattern = r'^Solver failed'
+""    cevaReportPattern = r'.*SIMULATION SUMMARY.*'    
+""    svaMemoryOffend = 'Offending'
+""    pllErrorPattern0 = r'\[ERROR\]:'
+""    pllErrorPattern1 = r'\[FAIL\]:'
+""
+""    vcsErrorPattern = r'^Error-\[.*\]'    
+""    vcsCoreDumpPattern = r'Completed context dump phase'
+""    vcsSimEndPattern = r'V C S   S i m u l a t i o n   R e p o r t'
+""    vcsTimingViolationPattern = r'.*Timing violation.*'
+""    vcsNullObjectFailPattern = r'.*Null object access'
+""    vcsSvaFailPattern = r'^Fatal:'
+""    vcsCstFailPattern = r'^Solver failed'
+""    vcsSvaMemoryOffend = 'Offending'
+""    vcsSvaVifError = 'Error: uninitialized virtual interface object'
+""    syncCellError = r'\[ERROR\]:'
+""
+""    xrunErrorPattern = r'^Error-\[.*\]'    
+""    coreDumpPattern = r'Completed context dump phase'
+""    simEndPattern = r'xcelium> exit'   
+""    simEndPattern1 = r'Simulation complete via .*'
+""    timingViolationPattern = r'.*Timing violation.*'
+""    syncCellError = r'\[ERROR\]:'
+
 syn region logString  start=+"+  end=+"+  keepend
 
 if !exists("did_log_syntax_inits")
@@ -138,6 +177,8 @@ if !exists("did_log_syntax_inits")
   hi  link  logQuoted2     Type    
   hi  link  logEmail       Special 
   hi  link  logString      String  
+  hi  link  logSva         logRedUL
+
 endif
 let b:current_syntax = "log"
 "END
