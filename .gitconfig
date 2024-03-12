@@ -27,7 +27,7 @@
 	sbc = submodule foreach git co master    
 [user]
 	name = jiongz
-	email = jiongz@huanghe.pct.bj
+	email = jiong.zhang@picocom.com
 [http]
 	proxy = 172.16.18.17:10000
 [credential]
@@ -36,3 +36,5 @@ helper = store
 	editor = /usr/bin/gvim
 [https]
 	proxy = 172.16.18.17:10000
+[push]
+	default = simple

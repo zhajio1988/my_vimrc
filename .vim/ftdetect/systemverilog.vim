@@ -1,4 +1,6 @@
-" Vim filetype plugin file
-" Language:	SystemVerilog (superset extension of Verilog)
-
-au! BufNewFile,BufRead *.v,*.vh,*.vp,*.sv,*.svi,*.svh,*.svp,*.sva setfiletype systemverilog
+"Author: Nachum Kanovsky
+"Email: nkanovsky@yahoo.com
+"Version: 1.15
+augroup filetypedetect
+    au! BufRead,BufNewFile *.sv,*.svi,*.svh,*.v,*.vh,*.vp,*.svp,*.sva setfiletype systemverilog
+augroup END

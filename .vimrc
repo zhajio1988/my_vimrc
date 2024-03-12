@@ -22,6 +22,8 @@ if has("gui_running")
     "colorscheme solarized
 else
     colorscheme molokai
+    "set background=dark
+    "colorscheme desert
 endif
 
 """"""""""""""""""some useful plugins setting"""""""""""""""
@@ -286,11 +288,11 @@ autocmd BufRead,BufNewFile *.rdl set filetype=systemrdl
 """"""""""""""""""""""<some useful setting>""""""""""""""""""""
 
 "open file type detecting
-filetype on
+"filetype on
 filetype plugin on
 
 "open syntax highlight
-syntax enable
+"syntax enable
 syntax on
 
 "indent based on filetype

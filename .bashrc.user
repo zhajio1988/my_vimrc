@@ -70,7 +70,12 @@ alias lg="ls -lsag"
 alias la="ls -A"
 alias dir="ls -lag | more"
 alias clr="/usr/bin/clear"
-alias gr='grep -n -R --exclude-dir=.git --exclude-dir=doc --exclude-dir=software/coremark/docs --color=auto'
+#alias gr='grep -n -R --exclude-dir=.git --exclude-dir=doc --exclude-dir=software/coremark/docs --color=auto'
+
+function gr(){
+    grep -n -R --exclude-dir=.git --exclude-dir=doc --exclude-dir=software/coremark/docs --color=auto "$1" | awk -F: '{print $1, ": " $2, ": " $3}'
+}
+
 alias gv="gvim -geom=189x42+0+10"
 alias g="gvim -geom=189x42-0+50"
 alias gn='gvim -u "NONE"'

@@ -1,4 +1,4 @@
 let g:netrw_dirhistmax  =10
 let g:netrw_dirhist_cnt =2
-let g:netrw_dirhist_1='/ssd_fes/jiongz/soc_dv/pc803/c920_synth/C920_R1S7P0_simulation/smart_run/tests/cases'
-let g:netrw_dirhist_2='/ssd_fes/jiongz/soc_dv/pc803/c920_synth/C920_R1S7P0_simulation/smart_run/tests/cases/dynamic_freq'
+let g:netrw_dirhist_1='/proj/fe/jiongz/work/ip_dv/pc801/axidport_01_11/common_ip_vv/pico_dev/axi_dport_vv/bin/vcs_cfg'
+let g:netrw_dirhist_2='/proj/fe/jiongz/work/ip_dv/pc801/axidport_01_11/common_ip_vv/pico_dev/axi_dport_vv/multi_port/tb'
